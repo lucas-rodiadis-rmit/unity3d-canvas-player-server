@@ -11,6 +11,8 @@ import {
 	SuccessResponse
 } from "./types";
 
+import { fetchOpenIDConfig } from "./services";
+
 /**
  * This file contains the registration router for handling OpenID configuration requests.
  * It defines the routes and their corresponding handlers for the registration process.
@@ -55,40 +57,27 @@ router.post(
 		}
 
 		try {
-			// Fetch the OpenID configuration from the given URL with authorization token
-			const response = await fetch(
-				openid_configuration as string,
-				{
-					headers: {
-						Accept: "application/json",
-						Authorization: `Bearer ${registration_token}`
-					}
-				}
-			);
-
-			// Handle failed response from the OpenID configuration fetch
-			if (!response.ok) {
-				throw new Error(
-					`HTTP ${response.status}: ${response.statusText}`
-				);
+			// Fetch OpenID configuration from the provided URL with the authorization token and registration token
+			const result = await fetchOpenIDConfig(openid_configuration, registration_token);
+			if (typeof result === "string") {
+				throw new Error("Unexpected response type: string");
 			}
+			const canvasOpenIdConfig: OpenIDConfigResponse = result;
 
-			// Parse the OpenID configuration response
-			const canvasConfig: OpenIDConfigResponse =
-				await response.json();
-
-			// Log the fetched configuration
-			console.log(
-				"Canvas OpenID Config:",
-				canvasConfig
-			);
+			// Log response json from OpenID configuration URL
+			console.log("Canvas OpenID Config:", canvasOpenIdConfig);
 
 			// Send successful response with OpenID issuer
 			res.status(StatusCodes.OK).json({
 				message:
 					"OpenID Configuration fetched successfully.",
-				canvas_issuer: canvasConfig.issuer
+				canvas_issuer: canvasOpenIdConfig.issuer
 			});
+
+			// TODO: Send installation UI to Canvas
+
+			// TODO: Send registration creation request to registration_endpoint
+			
 		} catch (error) {
 			// Log and return error response if fetch fails
 			console.error(
