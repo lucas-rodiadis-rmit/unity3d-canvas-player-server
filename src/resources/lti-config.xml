@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0"
+    xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0"
+    xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0"
+    xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd
+                        http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd
+                        http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd
+                        http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+
+    <blti:title>Unity3D Canvas Player</blti:title>
+    <blti:description>Test Unity3D app launch from Canvas</blti:description>
+    <blti:launch_url>https://your-public-server.com/lti/launch</blti:launch_url>
+    <blti:secure_launch_url>https://your-public-server.com/lti/launch</blti:secure_launch_url>
+    <blti:icon>https://your-public-server.com/assets/icon.png</blti:icon>
+
+    <blti:extensions platform="canvas.instructure.com">
+        <lticm:property name="tool_id">unity3d_canvas</lticm:property>
+        <lticm:property name="privacy_level">public</lticm:property>
+        <lticm:property name="domain">your-public-server.com</lticm:property>
+        <lticm:property name="course_navigation[enabled]">true</lticm:property>
+        <lticm:property name="course_navigation[default]">enabled</lticm:property>
+        <lticm:property name="course_navigation[visibility]">admins</lticm:property>
+        <lticm:property name="course_navigation[label]">Unity3D Player</lticm:property>
+        <lticm:property name="course_navigation[icon_url]">
+            https://your-public-server.com/assets/icon.png</lticm:property>
+        <lticm:property name="domain">your-public-server.com</lticm:property>
+        <lticm:property name="privacy_level">public</lticm:property>
+        <lticm:property name="tool_id">unity3d_canvas</lticm:property>
+
+        <!-- Add this block -->
+        <lticm:options name="editor_button">
+            <lticm:property name="url">https://f79c-131-170-250-218.ngrok-free.app/register</lticm:property>
+            <lticm:property name="icon_url">https://your-public-server.com/static/icon.png</lticm:property>
+            <lticm:property name="text">Unity3D Insert</lticm:property>
+            <lticm:property name="selection_width">800</lticm:property>
+            <lticm:property name="selection_height">600</lticm:property>
+        </lticm:options>
+
+        <!-- Optional: keep this for course nav -->
+        <lticm:options name="course_navigation">
+            <lticm:property name="enabled">true</lticm:property>
+            <lticm:property name="default">enabled</lticm:property>
+            <lticm:property name="text">Unity3D Player</lticm:property>
+        </lticm:options>
+    </blti:extensions>
+</cartridge_basiclti_link>

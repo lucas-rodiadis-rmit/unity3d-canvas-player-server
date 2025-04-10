@@ -15,6 +15,23 @@ import path from "path";
 const router = Router();
 
 /**
+ * GET /lti-config.xml
+ * This endpoint serves the LTI configuration XML file.
+ */
+router.get(
+	"/lti-config.xml",
+	(_req: Request, res: Response) => {
+		res.set("Content-Type", "application/xml");
+		res.sendFile(
+			path.join(
+				__dirname,
+				"../resources/lti-config.xml"
+			)
+		);
+	}
+);
+
+/**
  * GET /register
  * This endpoint is not allowed for GET requests.
  */
