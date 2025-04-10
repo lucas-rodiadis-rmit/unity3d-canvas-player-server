@@ -1,17 +1,12 @@
 import { Request, Response, Router } from "express";
-import {
-	ReasonPhrases,
-	StatusCodes
-} from "http-status-codes";
 
 import {
 	ErrorResponse,
-	OpenIDConfigResponse,
 	RegisterQueryParams,
 	SuccessResponse
 } from "./types";
 
-import { fetchOpenIDConfig } from "./services";
+import path from "path";
 
 /**
  * This file contains the registration router for handling OpenID configuration requests.
@@ -23,11 +18,24 @@ const router = Router();
  * GET /register
  * This endpoint is not allowed for GET requests.
  */
-router.get("/", (_, res) => {
-	res.status(StatusCodes.METHOD_NOT_ALLOWED)
-		.set("Allow", "POST")
-		.send(ReasonPhrases.METHOD_NOT_ALLOWED);
-});
+router.get(
+	"/",
+	async (req: Request, res: Response): Promise<any> => {
+		const { openid_configuration, registration_token } =
+			req.query;
+
+		console.log("Incoming req.query:", req.query);
+
+		if (!openid_configuration || !registration_token) {
+			return res.status(400).json({
+				error: "Missing required parameters: openid_configuration and/or registration_token"
+			});
+		}
+
+		// Process the registration...
+		res.send("Registration Success");
+	}
+);
 
 /**
  * POST /register
@@ -47,60 +55,70 @@ router.post(
 		const { openid_configuration, registration_token } =
 			req.query;
 
-		// Check for missing parameters
-		if (!openid_configuration || !registration_token) {
-			return res
-				.status(StatusCodes.BAD_REQUEST)
-				.json({
-					error: "Missing required parameters: openid_configuration and/or registration_token"
-				});
-			// return res.sendFile(
-			// 	path.join(__dirname, "../resources/index.html")
-			// );
-		}
+		// Log incoming request query parameters
+		console.log("Incoming req.query:", req.query);
+		console.log("Request URL:", req.originalUrl);
+		console.log("Request Method:", req.method);
+		console.log("Incoming req.body:", req.body);
+		console.log("Incoming req.params:", req.params);
+		console.log("Incoming req.headers:", req.headers);
 
-		try {
-			// Fetch OpenID configuration from the provided URL with the authorization token and registration token
-			const result = await fetchOpenIDConfig(
-				openid_configuration,
-				registration_token
-			);
-			if (typeof result === "string") {
-				throw new Error(
-					"Unexpected response type: string"
-				);
-			}
-			const canvasOpenIdConfig: OpenIDConfigResponse =
-				result;
+		// Send html file for  registration
+		res.sendFile(
+			path.join(__dirname, "../resources/index.html")
+		);
 
-			// Log response json from OpenID configuration URL
-			console.log(
-				"Canvas OpenID Config:",
-				canvasOpenIdConfig
-			);
+		// try {
+		// 	// Check for missing parameters
+		// 	if (
+		// 		!openid_configuration ||
+		// 		!registration_token
+		// 	) {
+		// 		throw new Error(
+		// 			"Invalid openid_configuration or registration_token"
+		// 		);
+		// 	}
+		// 	// Fetch OpenID configuration from the provided URL with the authorization token and registration token
+		// 	const result = await fetchOpenIDConfig(
+		// 		openid_configuration,
+		// 		registration_token
+		// 	);
+		// 	if (typeof result === "string") {
+		// 		throw new Error(
+		// 			"Unexpected response type: string"
+		// 		);
+		// 	}
+		// 	const canvasOpenIdConfig: OpenIDConfigResponse =
+		// 		result;
 
-			// Send successful response with OpenID issuer
-			res.status(StatusCodes.OK).json({
-				message:
-					"OpenID Configuration fetched successfully.",
-				canvas_issuer: canvasOpenIdConfig.issuer
-			});
+		// 	// Log response json from OpenID configuration URL
+		// 	console.log(
+		// 		"Canvas OpenID Config:",
+		// 		canvasOpenIdConfig
+		// 	);
 
-			// TODO: Send installation UI to Canvas
+		// 	// Send successful response with OpenID issuer
+		// 	res.status(StatusCodes.OK).json({
+		// 		message:
+		// 			"OpenID Configuration fetched successfully.",
+		// 		canvas_issuer: canvasOpenIdConfig.issuer
+		// 	});
 
-			// TODO: Send registration creation request to registration_endpoint
-		} catch (error) {
-			// Log and return error response if fetch fails
-			console.error(
-				"Failed to fetch OpenID configuration:",
-				error
-			);
-			res.status(
-				StatusCodes.INTERNAL_SERVER_ERROR
-			).json({
-				error: "Failed to fetch OpenID configuration"
-			});
-		}
+		// 	// TODO: Send installation UI to Canvas
+
+		// 	// TODO: Send registration creation request to registration_endpoint
+		// } catch (error) {
+		// 	// Log and return error response if fetch fails
+		// 	console.error(
+		// 		"Failed to fetch OpenID configuration:",
+		// 		error
+		// 	);
+		// 	res.status(
+		// 		StatusCodes.INTERNAL_SERVER_ERROR
+		// 	).json({
+		// 		error: "Failed to fetch OpenID configuration"
+		// 	});
+		// }
 	}
 );
 
