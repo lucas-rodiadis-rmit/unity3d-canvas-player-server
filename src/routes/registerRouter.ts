@@ -73,12 +73,17 @@ router.post(
 			req.query;
 
 		// Log incoming request query parameters
+		/*
 		console.log("Incoming req.query:", req.query);
 		console.log("Request URL:", req.originalUrl);
 		console.log("Request Method:", req.method);
 		console.log("Incoming req.body:", req.body);
 		console.log("Incoming req.params:", req.params);
 		console.log("Incoming req.headers:", req.headers);
+*/
+		
+		console.log(JSON.stringify(req));
+
 
 		// Send html file for  registration
 		res.sendFile(
