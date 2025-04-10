@@ -54,18 +54,30 @@ router.post(
 				.json({
 					error: "Missing required parameters: openid_configuration and/or registration_token"
 				});
+			// return res.sendFile(
+			// 	path.join(__dirname, "../resources/index.html")
+			// );
 		}
 
 		try {
 			// Fetch OpenID configuration from the provided URL with the authorization token and registration token
-			const result = await fetchOpenIDConfig(openid_configuration, registration_token);
+			const result = await fetchOpenIDConfig(
+				openid_configuration,
+				registration_token
+			);
 			if (typeof result === "string") {
-				throw new Error("Unexpected response type: string");
+				throw new Error(
+					"Unexpected response type: string"
+				);
 			}
-			const canvasOpenIdConfig: OpenIDConfigResponse = result;
+			const canvasOpenIdConfig: OpenIDConfigResponse =
+				result;
 
 			// Log response json from OpenID configuration URL
-			console.log("Canvas OpenID Config:", canvasOpenIdConfig);
+			console.log(
+				"Canvas OpenID Config:",
+				canvasOpenIdConfig
+			);
 
 			// Send successful response with OpenID issuer
 			res.status(StatusCodes.OK).json({
@@ -77,7 +89,6 @@ router.post(
 			// TODO: Send installation UI to Canvas
 
 			// TODO: Send registration creation request to registration_endpoint
-			
 		} catch (error) {
 			// Log and return error response if fetch fails
 			console.error(
