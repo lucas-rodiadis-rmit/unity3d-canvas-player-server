@@ -31,7 +31,7 @@
 
         <!-- Add this block -->
         <lticm:options name="editor_button">
-            <lticm:property name="url">https://169c-131-170-250-218.ngrok-free.app</lticm:property>
+            <lticm:property name="url">https://169c-131-170-250-218.ngrok-free.app/embed</lticm:property>
             <lticm:property name="icon_url">https://your-public-server.com/static/icon.png</lticm:property>
             <lticm:property name="text">Unity3D Insert</lticm:property>
             <lticm:property name="selection_width">800</lticm:property>
