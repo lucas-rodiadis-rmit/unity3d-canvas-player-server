@@ -36,34 +36,12 @@ router.get(
 	}
 );
 
-
-// router.get("*.gz", (req, res, next) => {
-// 	/*
-// 	const encoding = req.headers['accept-encoding'] || '';
-// 	if (!encoding.includes('gzip')) return next();
-
-// 	const originalPath = path.join(staticDir, req.path);
-// 	const gzPath = originalPath + '.gz';
-
-// 	fs.access(gzPath, fs.constants.F_OK, (err) => {
-// 	  if (err) return next();
-
-// 	  const contentType = mime.lookup(req.path);
-// 	  if (contentType) {
-// 		res.setHeader('Content-Type', contentType);
-// 	  }
-// 	  res.setHeader('Content-Encoding', 'gzip');
-// 	  res.setHeader('Vary', 'Accept-Encoding');
-// 	  res.sendFile(gzPath);
-// 	});
-
-//   */
-// });
-
-// router.get("/ClinicSim", (req, res, next) => {
+/**
+ * Middleware to set the Content-Encoding header for gzipped files
+ * This middleware checks if the requested file ends with .gz and sets the appropriate headers.
+ * It also sets the Content-Type header based on the file extension.
+ */
 router.use((req, res, next) => {
-	// const file: string = req.params.file;
-	// console.log("FILE: ", file);
 
 	// If the file ends with .gz, set the Content-Encoding to gzip
 	if (req.path.endsWith(".gz")) {
@@ -90,33 +68,13 @@ router.use((req, res, next) => {
 		}
 	}
 
-	// const readFilefs.readFileSync(path.join(__dirname, file));
-	// res.sendFile();
 	next();
 });
-
-/*
-router.get("/:file/", (req, res, next) => {
-	const file: string = req.path["file"];
-	if (file.endsWith(".gz")) {
-		res.setDefaultEncoding("gzip");
-	}
-
-	if (req.path["file"].endsWith(".js.gz")) {
-		res.header.contentType = "application/javascript";
-	}
-
-	if (req.path["file"].endsWith(".wasm")) {
-		res.header.contentType = "application/wasm";
-	}
-});
-*/
 
 // Serve static files from the 'dist' folder
 router.use(
 	"/",
 	express.static(path.join(__dirname, "../../dist"))
 );
-
 
 export default router;
