@@ -19,7 +19,9 @@ router.get(
 		// TODO: Fix this to be robust against XSS scripting
 		reactEntryPoint = reactEntryPoint.replace(
 			"__UNITY_CONFIG__",
-			JSON.stringify({ testKey: "testValue" })
+			JSON.stringify({
+				buildUrl: "/ClinicSim/Build"
+			})
 		);
 
 		res.set("Content-Type", "text/html");
