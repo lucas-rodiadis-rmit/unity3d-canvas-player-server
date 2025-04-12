@@ -6,6 +6,8 @@ import express, {
 } from "express";
 import path from "path";
 
+import * as fs from "fs";
+
 const router = Router();
 
 router.get(
@@ -23,16 +25,22 @@ router.get(
 // Serve Unity player at the 'unity-player' endpoint
 router.get(
 	"/unity-player",
-	function (
-		req: Request,
-		res: Response,
-		next: NextFunction
-	) {
+	function (req: Request, res: Response) {
 		// res.send("<html> <iframe src='../../dist/index.html' width='50%' 'height=50%' /> </html>");
 
-		res.sendFile(
-			path.join(__dirname, "../../dist/index.html")
+		let reactEntryPoint: string = fs.readFileSync(
+			path.join(__dirname, "../../dist/index.html"),
+			"utf-8"
 		);
+
+		// TODO: Fix this to be robust against XSS scripting
+		reactEntryPoint = reactEntryPoint.replace(
+			"__UNITY_CONFIG__",
+			JSON.stringify({ testKey: "testValue" })
+		);
+
+		res.set("Content-Type", "text/html");
+		res.send(reactEntryPoint);
 	}
 );
 
@@ -42,7 +50,6 @@ router.get(
  * It also sets the Content-Type header based on the file extension.
  */
 router.use((req, res, next) => {
-
 	// If the file ends with .gz, set the Content-Encoding to gzip
 	if (req.path.endsWith(".gz")) {
 		res.set("Content-Encoding", "gzip");
