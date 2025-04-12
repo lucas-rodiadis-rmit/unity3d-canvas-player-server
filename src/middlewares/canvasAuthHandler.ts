@@ -7,7 +7,7 @@ export const canvasAuthHandler = (
 	next: NextFunction
 ) => {
 	// TODO: Implement actual authentication here from canvas
-	const auth: boolean = false;
+	const auth: boolean = true;
 
 	if (!auth) {
 		console.log(
