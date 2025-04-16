@@ -9,7 +9,7 @@ router.post(
 	"/",
 	async (req: Request, res: Response): Promise<any> => {
 		const unityUrl =
-			"https://169c-131-170-250-218.ngrok-free.app/unity-player";
+			"https://canvasunityplayer.hudini.online/unity-player";
 
 		try {
 			const iframeHtml = `
