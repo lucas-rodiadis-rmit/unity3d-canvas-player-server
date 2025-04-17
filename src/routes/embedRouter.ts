@@ -1,32 +1,44 @@
 import { Request, Response, Router } from "express";
-import path from "path";
 import fs from "fs/promises";
+import path from "path";
 
 const router = Router();
 
-router.post("/", async (req: Request, res: Response): Promise<void> => {
-	const filePath = path.join(__dirname, "../resources/embed.html");
-  // Set CORS headers
-  res.setHeader("Access-Control-Allow-Origin", "*");
-	try {
-		const html = await fs.readFile(filePath, "utf-8");
-		res.send(html);
-	} catch (err) {
-		console.error("Error sending embed HTML:", err);
-		res.status(500).send("Internal Server Error");
-	}
-});
+router.post(
+	"/",
+	async (req: Request, res: Response): Promise<void> => {
+		const filePath = path.join(
+			__dirname,
+			"../resources/embed.html"
+		);
 
-router.post("/lti/launch", async (req: Request, res: Response): Promise<void> => {
-	console.log("LTI launch request received:", req.body);
-	res.send(`
-        <html>
-          <head><title>Unity Game</title></head>
-          <body>
-            <iframe src="https://canvasunityplayer.hudini.online/unity-player" width="100%" height="800" allowfullscreen></iframe>
-          </body>
-        </html>
-    `);
-});
+		// Debug: confirm Canvas sent the data
+		console.log("BODY:", req.body);
+
+		try {
+			let html = await fs.readFile(filePath, "utf-8");
+
+			if (
+				req.body &&
+				req.body.ext_content_return_url
+			) {
+				html = html.replace(
+					"{{RETURN_URL}}",
+					req.body.ext_content_return_url
+				);
+				console.log("html is", html);
+			} else {
+				console.warn(
+					"No ext_content_return_url found in request body."
+				);
+			}
+
+			res.send(html);
+		} catch (err) {
+			console.error("Error sending embed HTML:", err);
+			res.status(500).send("Internal Server Error");
+		}
+	}
+);
 
 export default router;

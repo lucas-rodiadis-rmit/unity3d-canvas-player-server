@@ -1,5 +1,5 @@
 import {
-	Express,
+	Express, urlencoded, json,
 	Router,
 	static as staticRoute
 } from "express";
@@ -37,5 +37,7 @@ router.use(
 );
 
 export function initialiseRoutes(app: Express) {
+	app.use(urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+	app.use(json()); // optional, for automatically parsing json bodies
 	app.use("/", router);
 }

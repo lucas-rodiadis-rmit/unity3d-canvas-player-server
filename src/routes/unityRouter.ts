@@ -6,7 +6,7 @@ import * as fs from "fs";
 const router = Router();
 
 // Serve Unity player at the 'unity-player' endpoint
-router.get(
+router.post(
 	"/unity-player",
 	function (req: Request, res: Response) {
 		// res.send("<html> <iframe src='../../dist/index.html' width='50%' 'height=50%' /> </html>");
