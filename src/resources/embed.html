@@ -1,10 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <body onload="document.forms[0].submit()">
-    <form action="{{RETURN_URL}}" method="POST">
-      <input type="hidden" name="lti_message_type" value="ContentItemSelection">
-      <input type="hidden" name="lti_version" value="LTI-1p0">
-      <input type="hidden" name="content_items" value='{
+	<head>
+		<meta charset="utf-8" />
+		<title>Insert Unity3D Player</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				padding: 20px;
+				background-color: #f9f9f9;
+			}
+			h2 {
+				color: #333;
+			}
+			p {
+				margin-top: 10px;
+				margin-bottom: 20px;
+			}
+			button {
+				background-color: #007aff;
+				color: white;
+				border: none;
+				padding: 10px 20px;
+				font-size: 16px;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: #005ecb;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Embed Unity3D Player</h2>
+		<p>
+			Click the button below to embed the Unity3D
+			Player into your Canvas content.
+		</p>
+		<button onclick="document.forms[0].submit()">
+			Embed Unity3D Player
+		</button>
+
+		<form action="{{RETURN_URL}}" method="POST">
+			<input
+				type="hidden"
+				name="lti_message_type"
+				value="ContentItemSelection"
+			/>
+			<input
+				type="hidden"
+				name="lti_version"
+				value="LTI-1p0"
+			/>
+			<input
+				type="hidden"
+				name="content_items"
+				value='{
         "@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
         "@graph": [
           {
@@ -19,7 +69,8 @@
             }
           }
         ]
-      }'>
-    </form>
-  </body>
+      }'
+			/>
+		</form>
+	</body>
 </html>

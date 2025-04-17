@@ -26,7 +26,6 @@ router.post(
 					"{{RETURN_URL}}",
 					req.body.ext_content_return_url
 				);
-				console.log("html is", html);
 			} else {
 				console.warn(
 					"No ext_content_return_url found in request body."
