@@ -8,7 +8,8 @@ import path from "path";
 
 import {
 	canvasAuthHandler,
-	gzipHandler
+	gzipHandler,
+	requestLogger
 } from "../middlewares";
 
 import baseRouter from "./baseRouter";
@@ -17,6 +18,8 @@ import registerRouter from "./registerRouter";
 import unityRouter from "./unityRouter";
 
 const router = Router();
+
+router.use(requestLogger);
 
 // Handle headers of gzip first
 router.use(gzipHandler);
