@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-export const gzipHandler = (
+export const requestLogger = (
 	req: Request,
 	res: Response,
 	next: NextFunction
