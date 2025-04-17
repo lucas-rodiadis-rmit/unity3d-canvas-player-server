@@ -11,28 +11,27 @@
 
     <blti:title>Unity3D Canvas Player</blti:title>
     <blti:description>Test Unity3D app launch from Canvas</blti:description>
-    <blti:launch_url>https://your-public-server.com/lti/launch</blti:launch_url>
-    <blti:secure_launch_url>https://your-public-server.com/lti/launch</blti:secure_launch_url>
+    <blti:launch_url>https://canvasunityplayer.hudini.online/lti/launch</blti:launch_url>
+    <blti:secure_launch_url>https://canvasunityplayer.hudini.online/lti/launch</blti:secure_launch_url>
     <blti:icon>https://your-public-server.com/assets/icon.png</blti:icon>
 
     <blti:extensions platform="canvas.instructure.com">
         <lticm:property name="tool_id">unity3d_canvas</lticm:property>
         <lticm:property name="privacy_level">public</lticm:property>
-        <lticm:property name="domain">your-public-server.com</lticm:property>
+        <lticm:property name="domain">https://canvasunityplayer.hudini.online</lticm:property>
         <lticm:property name="course_navigation[enabled]">true</lticm:property>
         <lticm:property name="course_navigation[default]">enabled</lticm:property>
         <lticm:property name="course_navigation[visibility]">admins</lticm:property>
         <lticm:property name="course_navigation[label]">Unity3D Player</lticm:property>
         <lticm:property name="course_navigation[icon_url]">
             https://your-public-server.com/assets/icon.png</lticm:property>
-        <lticm:property name="domain">your-public-server.com</lticm:property>
-        <lticm:property name="privacy_level">public</lticm:property>
-        <lticm:property name="tool_id">unity3d_canvas</lticm:property>
+
 
         <!-- Add this block -->
         <lticm:options name="editor_button">
             <lticm:property name="url">https://canvasunityplayer.hudini.online/embed</lticm:property>
             <lticm:property name="icon_url">https://your-public-server.com/static/icon.png</lticm:property>
+            <lticm:property name="message_type"></lticm:property>
             <lticm:property name="text">Unity3D Insert</lticm:property>
             <lticm:property name="selection_width">800</lticm:property>
             <lticm:property name="selection_height">600</lticm:property>

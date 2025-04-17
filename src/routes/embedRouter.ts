@@ -1,80 +1,32 @@
 import { Request, Response, Router } from "express";
+import path from "path";
+import fs from "fs/promises";
 
 const router = Router();
 
-/**
- * Serve Unity plugin embed to Canvas content editor
- */
-router.post(
-	"/",
-	async (req: Request, res: Response): Promise<any> => {
-		const unityUrl =
-			"https://canvasunityplayer.hudini.online/unity-player";
-
-		try {
-			const iframeHtml = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <meta charset="utf-8" />
-          <title>Insert Unity3D Player</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              padding: 20px;
-              background-color: #f9f9f9;
-            }
-            h2 {
-              color: #333;
-            }
-            p {
-              margin-top: 10px;
-              margin-bottom: 20px;
-            }
-            button {
-              background-color: #007aff;
-              color: white;
-              border: none;
-              padding: 10px 20px;
-              font-size: 16px;
-              border-radius: 4px;
-              cursor: pointer;
-            }
-            button:hover {
-              background-color: #005ecb;
-            }
-          </style>
-        </head>
-        <body>
-          <h2>Embed Unity3D Player</h2>
-          <p>Click the button below to embed the Unity3D Player into your Canvas content.</p>
-          <button onclick="embedUnity()">Embed Unity3D Player</button>
-
-          <script>
-            function embedUnity() {
-              const contentItem = {
-                subject: "lti.content_itemSelection",
-                content_items: [
-                  {
-                    type: "iframe",
-                    value: '<iframe src="${unityUrl}" width="800" height="600" style="border:0;" allowfullscreen></iframe>'
-                  }
-                ]
-              };
-
-              window.parent.postMessage(contentItem, "*");
-            }
-          </script>
-        </body>
-      </html>
-    `;
-
-			res.send(iframeHtml);
-		} catch (err) {
-			console.error("Error sending embed HTML:", err);
-			res.status(500).send("Internal Server Error");
-		}
+router.post("/", async (req: Request, res: Response): Promise<void> => {
+	const filePath = path.join(__dirname, "../resources/embed.html");
+  // Set CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+	try {
+		const html = await fs.readFile(filePath, "utf-8");
+		res.send(html);
+	} catch (err) {
+		console.error("Error sending embed HTML:", err);
+		res.status(500).send("Internal Server Error");
 	}
-);
+});
+
+router.post("/lti/launch", async (req: Request, res: Response): Promise<void> => {
+	console.log("LTI launch request received:", req.body);
+	res.send(`
+        <html>
+          <head><title>Unity Game</title></head>
+          <body>
+            <iframe src="https://canvasunityplayer.hudini.online/unity-player" width="100%" height="800" allowfullscreen></iframe>
+          </body>
+        </html>
+    `);
+});
 
 export default router;

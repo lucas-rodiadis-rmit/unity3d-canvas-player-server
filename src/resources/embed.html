@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Insert Unity3D Player</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				padding: 20px;
+				background-color: #f9f9f9;
+			}
+			h2 {
+				color: #333;
+			}
+			p {
+				margin-top: 10px;
+				margin-bottom: 20px;
+			}
+			button {
+				background-color: #007aff;
+				color: white;
+				border: none;
+				padding: 10px 20px;
+				font-size: 16px;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: #005ecb;
+			}
+		</style>
+	</head>
+	<body>
+		<h2>Embed Unity3D Player</h2>
+		<p>
+			Click the button below to embed the Unity3D
+			Player into your Canvas content.
+		</p>
+		<button onclick="sendToCanvas()">
+			Embed Unity3D Player
+		</button>
+
+		<script>
+			function sendToCanvas() {
+				console.log("Embedding Unity3D Player");
+				const contentItem = {
+					subject: 'lti.getPageContent.response',
+					content: '<div>...</div>'
+				};
+
+				console.log("window.parent === window is" + (window.parent === window));
+
+				// window.parent.postMessage(
+				// 	{
+				// 		subject: 'lti.showAlert',
+				// 		alertType: 'warning',
+				// 		body: 'An warning to be shown',
+				// 		title: 'Tool Name',
+				// 	},
+				// 	'*'
+				// )
+				console.log("postMessage function returns: " + window.parent.postMessage(
+					{
+						subject:
+							"lti.getPageContent",
+						content_items:
+							contentItem
+					}),
+					"*"
+				);
+			}
+		</script>
+	</body>
+</html>
+
