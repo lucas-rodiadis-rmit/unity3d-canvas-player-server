@@ -8,9 +8,10 @@ import path from "path";
 
 import {
 	canvasAuthHandler,
-	gzipHandler,
-	requestLogger
+	gzipHandler
 } from "../middlewares";
+
+import morgan from "morgan";
 
 import baseRouter from "./baseRouter";
 import embedRouter from "./embedRouter";
@@ -19,7 +20,7 @@ import unityRouter from "./unityRouter";
 
 const router = Router();
 
-router.use(requestLogger);
+router.use(morgan("common"));
 
 // Handle headers of gzip first
 router.use(gzipHandler);
