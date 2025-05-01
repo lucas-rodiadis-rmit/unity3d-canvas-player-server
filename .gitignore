@@ -1,4 +1,6 @@
 dist/
+*database.db
+*current_migration
 node_modules/
 .node_modules/
 built/*
