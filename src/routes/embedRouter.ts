@@ -23,7 +23,7 @@ router.post(
 				req.body.ext_content_return_url
 			) {
 				html = html.replace(
-					"{{RETURN_URL}}",
+					/{{RETURN_URL}}/g,
 					req.body.ext_content_return_url
 				);
 			} else {

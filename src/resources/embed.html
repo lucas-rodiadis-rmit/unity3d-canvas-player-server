@@ -36,8 +36,13 @@
 			Click the button below to embed the Unity3D
 			Player into your Canvas content.
 		</p>
+		<!--  -->
 		<button onclick="document.forms[0].submit()">
-			Embed Unity3D Player
+			Embed Unity3D Player (iframe)
+		</button>
+		<!-- Use second form -->
+		<button onclick="document.forms[1].submit()">
+			Embed Unity3D Player (frame)
 		</button>
 
 		<form action="{{RETURN_URL}}" method="POST">
@@ -66,6 +71,39 @@
             "mediaType": "application/vnd.ims.lti.v1.ltilink",
             "placementAdvice": {
               "presentationDocumentTarget": "iframe"
+            }
+          }
+        ]
+      }'
+			/>
+		</form>
+
+		<form action="{{RETURN_URL}}" method="POST">
+			<input
+				type="hidden"
+				name="lti_message_type"
+				value="ContentItemSelection"
+			/>
+			<input
+				type="hidden"
+				name="lti_version"
+				value="LTI-1p0"
+			/>
+			<input
+				type="hidden"
+				name="content_items"
+				value='{
+        "@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
+        "@graph": [
+          {
+            "@type": "LtiLinkItem",
+            "@id": "https://canvasunityplayer.hudini.online/unity-player",
+            "url": "https://canvasunityplayer.hudini.online/unity-player",
+            "title": "Unity Player Embed",
+            "text": "Play Now!",
+            "mediaType": "application/vnd.ims.lti.v1.ltilink",
+            "placementAdvice": {
+              "presentationDocumentTarget": "frame"
             }
           }
         ]
