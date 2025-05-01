@@ -140,7 +140,7 @@ export function initialiseDb(
 
 	for (const migration of migrations) {
 		console.log(
-			`Executing ${path.basename(migration)}`
+			`- Executing ${path.basename(migration)}`
 		);
 		try {
 			const script = fs.readFileSync(
@@ -150,7 +150,7 @@ export function initialiseDb(
 			DB.exec(script);
 
 			console.log(
-				`Finished ${path.basename(migration)}`
+				`- Finished ${path.basename(migration)}`
 			);
 			setCurrentMigration(migration);
 		} catch (error) {
