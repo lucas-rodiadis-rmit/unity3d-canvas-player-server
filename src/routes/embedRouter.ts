@@ -1,12 +1,17 @@
 import { Request, Response, Router } from "express";
 import fs from "fs/promises";
+import path from "path";
 
 const router = Router();
 
 router.post(
 	"/",
 	async (req: Request, res: Response): Promise<void> => {
-		const filePath = "/resources/embed.html";
+		const filePath = path.join(
+			process.cwd(),
+			"resources",
+			"embed.html"
+		);
 
 		// Debug: confirm Canvas sent the data
 		console.log("BODY:", req.body);
