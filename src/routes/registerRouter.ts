@@ -6,8 +6,6 @@ import {
 	SuccessResponse
 } from "./types";
 
-import path from "path";
-
 /**
  * This file contains the registration router for handling OpenID configuration requests.
  * It defines the routes and their corresponding handlers for the registration process.
@@ -22,10 +20,7 @@ router.get(
 	"/lti-config.xml",
 	(_req: Request, res: Response) => {
 		res.set("Content-Type", "application/xml");
-		res.sendFile(
-				"/resources/lti-config.xml"
-			)
-		);
+		res.sendFile("/resources/lti-config.xml");
 	}
 );
 
