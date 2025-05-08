@@ -1,12 +1,13 @@
 import express from "express";
 
-import { initialiseDb } from "./database";
 import { errorHandler } from "./middlewares";
 import { initialiseRoutes } from "./routes";
 
+import { initDatabase } from "./database";
+
 import { exit } from "process";
 
-if (!initialiseDb(true)) {
+if (!initDatabase(true)) {
 	console.error(
 		"\nUnable to initialise the database. Exiting now."
 	);

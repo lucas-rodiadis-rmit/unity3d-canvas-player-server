@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import path from "path";
 
 import * as fs from "fs";
+import { getUnityAppConfig } from "../database";
 
 const router = Router();
 
@@ -23,10 +24,7 @@ router.post(
 			return;
 		}
 
-		// TODO: Make this fetch from the database instead
-		const appConfig = {
-			buildUrl: "/ClinicSim/Build"
-		};
+		const appConfig = getUnityAppConfig("test123456");
 
 		// TODO: Log that someone created a session for the app
 		let reactEntryPoint: string = fs.readFileSync(
