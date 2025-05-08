@@ -1,3 +1,4 @@
+resources/player/
 dist/
 *database.db
 *current_migration
