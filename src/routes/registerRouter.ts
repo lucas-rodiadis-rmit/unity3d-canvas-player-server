@@ -25,7 +25,7 @@ router.get(
 		res.sendFile(
 			path.join(
 				__dirname,
-				"../resources/lti-config.xml"
+				"./resources/lti-config.xml"
 			)
 		);
 	}
@@ -81,13 +81,12 @@ router.post(
 		console.log("Incoming req.params:", req.params);
 		console.log("Incoming req.headers:", req.headers);
 */
-		
-		console.log(JSON.stringify(req));
 
+		console.log(JSON.stringify(req));
 
 		// Send html file for  registration
 		res.sendFile(
-			path.join(__dirname, "../resources/index.html")
+			path.join(__dirname, "./resources/index.html")
 		);
 
 		// try {

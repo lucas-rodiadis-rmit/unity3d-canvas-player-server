@@ -9,7 +9,7 @@ router.post(
 	async (req: Request, res: Response): Promise<void> => {
 		const filePath = path.join(
 			__dirname,
-			"../resources/embed.html"
+			"./resources/embed.html"
 		);
 
 		// Debug: confirm Canvas sent the data
