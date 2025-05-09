@@ -12,7 +12,7 @@ router.post(
 
 		const returnUrl: string = req.body?.ext_content_return_url;
 		const embedUrl: string =
-			process.env.EMBED_PLAYER_URL +
+			process.env.DOMAIN_URL +
 			"unity-player/test123456";
 
 		if (!returnUrl) {
