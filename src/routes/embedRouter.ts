@@ -27,6 +27,11 @@ router.post(
 					/{{RETURN_URL}}/g,
 					req.body.ext_content_return_url
 				);
+
+				html = html.replace(
+					"__UNITY_APP_ID__",
+					"test123456"
+				);
 			} else {
 				console.warn(
 					"No ext_content_return_url found in request body."
