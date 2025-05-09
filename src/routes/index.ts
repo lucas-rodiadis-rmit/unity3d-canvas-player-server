@@ -1,7 +1,9 @@
 import {
-	Express, urlencoded, json,
+	Express,
+	json,
 	Router,
-	static as staticRoute
+	static as staticRoute,
+	urlencoded
 } from "express";
 
 import path from "path";
@@ -37,20 +39,30 @@ router.use("/embed", embedRouter);
 
 router.use(
 	"/",
-	staticRoute(path.join(__dirname, "../../dist"))
+	staticRoute(path.join(process.cwd(), "dist"))
+);
+
+router.use(
+	"/",
+	staticRoute(
+		path.join(process.cwd(), "resources", "player")
+	)
 );
 
 export function initialiseRoutes(app: Express) {
-    // Set up the EJS templating engine for rendering views
-    app.set("view engine", "ejs");
-    app.set("views", path.join(process.cwd(), "resources", "views"));
+	// Set up the EJS templating engine for rendering views
+	app.set("view engine", "ejs");
+	app.set(
+		"views",
+		path.join(process.cwd(), "resources", "views")
+	);
 
-    // Automatically parse application/x-www-form-urlencoded request bodies
-    app.use(urlencoded({ extended: true }));
+	// Automatically parse application/x-www-form-urlencoded request bodies
+	app.use(urlencoded({ extended: true }));
 
-    // Automatically parse application/json request bodies
-    app.use(json());
+	// Automatically parse application/json request bodies
+	app.use(json());
 
-    // Attach the main router to handle all routes
-    app.use("/", router);
+	// Attach the main router to handle all routes
+	app.use("/", router);
 }
