@@ -1,5 +1,5 @@
 import { initialiseDb } from "./internals";
-export { getUnityAppConfig } from "./UnityApp";
+export { getUnityAppConfig } from "./unityapp.controller";
 
 export function initDatabase(
 	migrate: boolean = true
