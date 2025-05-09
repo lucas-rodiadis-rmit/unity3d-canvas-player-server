@@ -1,15 +1,11 @@
 import express from "express";
 
-import dotenv from "dotenv";
 import { exit } from "process";
 
 import { errorHandler } from "./middlewares";
 import { initialiseRoutes } from "./routes";
 
 import { initDatabase } from "./database";
-
-// Load environment variables from .env file
-dotenv.config();
 
 if (!initDatabase(true)) {
 	console.error(
