@@ -49,6 +49,11 @@ router.use(
 	)
 );
 
+router.use(
+	"/",
+	staticRoute(path.join(process.cwd(), "resources"))
+);
+
 export function initialiseRoutes(app: Express) {
 	// Set up the EJS templating engine for rendering views
 	app.set("view engine", "ejs");
