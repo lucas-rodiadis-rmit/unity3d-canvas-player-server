@@ -1,6 +1,8 @@
 import { Request, Response, Router } from "express";
 import path from "path";
 
+import { static as staticRoute } from "express";
+
 import * as fs from "fs";
 import { getUnityAppConfig } from "../database";
 
@@ -47,5 +49,12 @@ function playerFunction(req: Request, res: Response) {
 // Serve Unity player at the 'unity-player' endpoint
 router.post("/unity-player/:appId", playerFunction);
 router.get("/unity-player/:appId", playerFunction);
+
+router.use(
+	"/unity-player",
+	staticRoute(
+		path.join(process.cwd(), "resources", "player")
+	)
+);
 
 export default router;
