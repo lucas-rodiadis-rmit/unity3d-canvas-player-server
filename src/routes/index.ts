@@ -43,7 +43,7 @@ router.use(
 );
 
 router.use(
-	"/unity-player/",
+	"/unity-player",
 	staticRoute(
 		path.join(process.cwd(), "resources", "player")
 	)
