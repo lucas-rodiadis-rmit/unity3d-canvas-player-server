@@ -57,4 +57,11 @@ router.use(
 	)
 );
 
+router.use(
+	"/",
+	staticRoute(
+		path.join(process.cwd(), "resources", "player")
+	)
+);
+
 export default router;
