@@ -41,7 +41,16 @@ router.use(
 );
 
 export function initialiseRoutes(app: Express) {
-	app.use(urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-	app.use(json()); // optional, for automatically parsing json bodies
-	app.use("/", router);
+    // Set up the EJS templating engine for rendering views
+    app.set("view engine", "ejs");
+    app.set("views", path.join(process.cwd(), "resources", "views"));
+
+    // Automatically parse application/x-www-form-urlencoded request bodies
+    app.use(urlencoded({ extended: true }));
+
+    // Automatically parse application/json request bodies
+    app.use(json());
+
+    // Attach the main router to handle all routes
+    app.use("/", router);
 }
