@@ -38,39 +38,45 @@
   <form action="<%= returnUrl %>" method="POST">
     <input type="hidden" name="lti_message_type" value="ContentItemSelection" />
     <input type="hidden" name="lti_version" value="LTI-1p0" />
-    <input type="hidden" name="content_items" value='<%- JSON.stringify({
+    <input type="hidden" name="content_items" value='{
       "@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
-      "@graph": [{
-        "@type": "LtiLinkItem",
-        "@id": embedUrl,
-        "url": embedUrl,
-        "title": "Unity Player Embed",
-        "text": "Play Now!",
-        "mediaType": "application/vnd.ims.lti.v1.ltilink",
-        "placementAdvice": {
-          "presentationDocumentTarget": "iframe"
+      "@graph": [
+        {
+          "@type": "LtiLinkItem",
+          "@id": "<%= embedUrl %>",
+          "url": "<%= embedUrl %>",
+          "title": "Unity Player Embed",
+          "text": "Play Now!",
+          "mediaType": "application/vnd.ims.lti.v1.ltilink",
+          "placementAdvice": {
+            "presentationDocumentTarget": "iframe"
+          }
         }
-      }]
-    }) %>' />
+      ]
+    }' />
+    <button type="submit">Embed: <%= embedUrl %></button>
   </form>
+  
 
   <form action="<%= returnUrl %>" method="POST">
     <input type="hidden" name="lti_message_type" value="ContentItemSelection" />
     <input type="hidden" name="lti_version" value="LTI-1p0" />
-    <input type="hidden" name="content_items" value='<%- JSON.stringify({
+    <input type="hidden" name="content_items" value='{
       "@context": "http://purl.imsglobal.org/ctx/lti/v1/ContentItem",
-      "@graph": [{
-        "@type": "LtiLinkItem",
-        "@id": embedUrl,
-        "url": embedUrl,
-        "title": "Unity Player Embed",
-        "text": "Play Now!",
-        "mediaType": "application/vnd.ims.lti.v1.ltilink",
-        "placementAdvice": {
-          "presentationDocumentTarget": "frame"
+      "@graph": [
+        {
+          "@type": "LtiLinkItem",
+          "@id": "<%= embedUrl %>",
+          "url": "<%= embedUrl %>",
+          "title": "Unity Player Embed",
+          "text": "Play Now!",
+          "mediaType": "application/vnd.ims.lti.v1.ltilink",
+          "placementAdvice": {
+            "presentationDocumentTarget": "iframe"
+          }
         }
-      }]
-    }) %>' />
+      ]
+    }' />
   </form>
 </body>
 </html>
