@@ -28,7 +28,7 @@ router.post(
 
 		// TODO: Log that someone created a session for the app
 		let reactEntryPoint: string = fs.readFileSync(
-			path.join(process.cwd(), "dist", "index.html"),
+			path.join(process.cwd(), "resources", "player", "index.html"),
 			"utf-8"
 		);
 
