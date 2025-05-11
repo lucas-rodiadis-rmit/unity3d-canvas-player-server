@@ -5,7 +5,7 @@ kill $(lsof -ti tcp:$PORT)
 # kill -9 $(lsof -ti tcp:$PORT)
 # Force kill, if necessary
 
-# Get path variables from a .env file
+# Get environment variables from a .env file
 # The following should be defined in .env as they are used in this script:
 #   PORT, 
 #   UNITY_PROJECTS_DIR
