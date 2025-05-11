@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Kill existing node on the port to avoid port conflicts
-kill $(lsof -ti tcp:$PORT)
-# kill -9 $(lsof -ti tcp:$PORT)
-# Force kill, if necessary
-
 # Get environment variables from a .env file
 # The following should be defined in .env as they are used in this script:
 #   PORT, 
 #   UNITY_PROJECTS_DIR
 source .env
+
+# Kill existing node on the port to avoid port conflicts
+kill $(lsof -ti tcp:$PORT)
+# kill -9 $(lsof -ti tcp:$PORT)
+# Force kill, if necessary
 
 # Create the folder to store the unity projects, if it doesn't already exist
 mkdir -p "$UNITY_PROJECTS_DIR" &&
