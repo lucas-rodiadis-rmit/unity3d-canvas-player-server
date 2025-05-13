@@ -7,7 +7,7 @@ PORT=8080
 # Save the original working directory of the parent script
 export PARENT_SCRIPT_DIR=$(pwd)
 # Export environment variables for use in child scripts
-export UNITY_PROJECTS_DIR="./storage/unity-projects"
+export UNITY_PROJECTS_DIR="./storage/unity-projects/"
 export DOMAIN_URL="https://canvasunityplayer.hudini.online/"
 export PUBLIC_URL="${DOMAIN_URL}public/"
 
