@@ -66,6 +66,4 @@ router.use(
 	)
 );
 
-router.use()
-
 export default router;
