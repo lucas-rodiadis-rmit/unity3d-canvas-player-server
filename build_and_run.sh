@@ -1,9 +1,8 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
-# Load environment variables from .env
-# Ensure .env defines: PORT
-source .env
+# Variables for script
+PORT=8080
 
 # Save the original working directory of the parent script
 export PARENT_SCRIPT_DIR=$(pwd)
