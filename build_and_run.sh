@@ -1,31 +1,25 @@
 #!/bin/bash
+set -e  # Exit immediately if a command exits with a non-zero status
 
-# Get environment variables from a .env file
-# The following should be defined in .env as they are used in this script:
-#   PORT, 
+# Load environment variables from .env
+# Ensure .env defines: PORT
 source .env
 
-# The directory where the Unity projects will be stored
-UNITY_PROJECTS_DIR="./storage/unity-projects"
-UNITY_PROJECTS_DIR="$UNITY_PROJECTS_DIR" ../client/build_client_side.sh # Pass the directory to the client-side build script
+# Export environment variables for use in child scripts
+export UNITY_PROJECTS_DIR="./storage/unity-projects"
+export DOMAIN_URL="https://canvasunityplayer.hudini.online/"
+export PUBLIC_URL="${DOMAIN_URL}public/"
 
-# The domain URL for the server
-DOMAIN_URL="https://canvasunityplayer.hudini.online/"
-DOMAIN_URL="$DOMAIN_URL" ../client/build_client_side.sh # Pass the domain URL to the client-side build script
-# Public assets directory for the server
-PUBLIC_URL="${DOMAIN_URL}public/"
-PUBLIC_URL="$PUBLIC_URL" ../client/build_client_side.sh # Pass the public URL to the client-side build script
+# Kill existing process using the PORT (suppress errors if nothing is running)
+kill $(lsof -ti tcp:$PORT) 2>/dev/null || true
+# Uncomment below to force kill if needed
+# kill -9 $(lsof -ti tcp:$PORT) 2>/dev/null || true
 
-# Kill existing node on the port to avoid port conflicts
-kill $(lsof -ti tcp:$PORT)
-# kill -9 $(lsof -ti tcp:$PORT)
-# Force kill, if necessary
-
-# Create the folder to store the unity projects, if it doesn't already exist
-mkdir -p "$UNITY_PROJECTS_DIR" &&
+# Create Unity projects directory if it doesn't exist
+mkdir -p "$UNITY_PROJECTS_DIR"
 
 # Build client-side code
-../client/build_client_side.sh &&
+../client/build_client_side.sh
 
-# (Assuming dependencies are installed) Build the server and run it
+# Build and start server
 npm run build && npm start
