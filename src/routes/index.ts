@@ -59,7 +59,12 @@ export function initialiseRoutes(app: Express) {
 	app.set("view engine", "ejs");
 	app.set(
 		"views",
-		path.join(process.cwd(), "resources", "views")
+		path.join(
+			process.cwd(),
+			"src",
+			"resources",
+			"views"
+		)
 	);
 
 	// Automatically parse application/x-www-form-urlencoded request bodies

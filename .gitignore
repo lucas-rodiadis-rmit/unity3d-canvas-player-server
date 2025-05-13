@@ -1,3 +1,6 @@
+# Storage has Unity project files and database
+storage/
+
 resources/player/
 dist/
 *database.db

@@ -3,19 +3,22 @@ import path from "path";
 
 import Database from "better-sqlite3";
 
-const DB_ROOT_DIR: string = "./database";
 // const DB_ROOT_DIR: string = __dirname + "/database";
 const DB_MIGRATIONS_DIR: string = path.join(
-	DB_ROOT_DIR,
+	process.cwd(),
+	"src",
 	"/migrations"
 );
 const DB_CURRENT_MIGRATION_FILE = path.join(
-	DB_ROOT_DIR,
+	process.cwd(),
+	"src",
+	"/migrations",
 	"/current_migration"
 );
 
 const DB_FILE: string = path.join(
-	DB_ROOT_DIR,
+	process.cwd(),
+	"storage",
 	"/database.db"
 );
 
