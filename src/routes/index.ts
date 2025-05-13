@@ -33,25 +33,21 @@ router.use("", baseRouter);
 // ALL ROUTES BELOW HERE ARE REQUIRED TO BE AUTHENTICATED
 router.use(canvasAuthHandler);
 
+// Define endpoints using modularised routers
 router.use("", unityRouter);
 router.use("/register", registerRouter);
 router.use("/embed", embedRouter);
 
+// Set static for public resources
 router.use(
-	"/",
-	staticRoute(path.join(process.cwd(), "dist"))
-);
-
-router.use(
-	"/unity-player",
+	"/public",
 	staticRoute(
-		path.join(process.cwd(), "resources", "player")
+		path.join(
+			process.cwd(),
+			"src",
+			"public"
+		)
 	)
-);
-
-router.use(
-	"/",
-	staticRoute(path.join(process.cwd(), "resources"))
 );
 
 export function initialiseRoutes(app: Express) {
