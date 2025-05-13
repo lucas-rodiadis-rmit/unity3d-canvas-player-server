@@ -9,7 +9,8 @@ export PARENT_SCRIPT_DIR=$(pwd)
 # Export environment variables for use in child scripts
 export UNITY_PROJECTS_DIR="./storage/unity-projects/"
 export DOMAIN_URL="https://canvasunityplayer.hudini.online/"
-export PUBLIC_URL="${DOMAIN_URL}public/"
+export CLIENT_SIDE_DIR="frontend"
+export CLIENT_SIDE_URL="${DOMAIN_URL}${CLIENT_SIDE_DIR}/"
 
 # Kill existing process using the PORT (suppress errors if nothing is running)
 kill $(lsof -ti tcp:$PORT) 2>/dev/null || true

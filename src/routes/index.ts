@@ -40,7 +40,7 @@ router.use("/embed", embedRouter);
 
 // Set static for public resources
 router.use(
-	"/public",
+	"/",
 	staticRoute(
 		path.join(
 			process.cwd(),

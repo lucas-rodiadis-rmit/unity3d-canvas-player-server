@@ -23,14 +23,18 @@ function playerFunction(req: Request, res: Response) {
 		return;
 	}
 
-	const appConfig = getUnityAppConfig("test123456");
+	// TODO: Check if the appId is valid and exists in the database
+	const appId: string = req.params.appId;
+	// TODO: Currently set only to use test123456 appId
+	const appConfig = getUnityAppConfig(appId);
 
 	// TODO: Log that someone created a session for the app
 	let reactEntryPoint: string = fs.readFileSync(
 		path.join(
 			process.cwd(),
-			"resources",
-			"player",
+			"storage",
+			"unity_projects",
+			appId,
 			"index.html"
 		),
 		"utf-8"
@@ -53,15 +57,15 @@ router.get("/unity-player/:appId", playerFunction);
 router.use(
 	"/unity-player",
 	staticRoute(
-		path.join(process.cwd(), "resources", "player")
+		path.join(
+			process.cwd(),
+			"src",
+			"public",
+			"frontend"
+		)
 	)
 );
 
-router.use(
-	"/",
-	staticRoute(
-		path.join(process.cwd(), "resources", "player")
-	)
-);
+router.use()
 
 export default router;
