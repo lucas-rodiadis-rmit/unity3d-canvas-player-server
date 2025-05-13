@@ -7,6 +7,7 @@ import Database from "better-sqlite3";
 const DB_MIGRATIONS_DIR: string = path.join(
 	process.cwd(),
 	"src",
+	"resources",
 	"migrations"
 );
 const DB_CURRENT_MIGRATION_FILE = path.join(
