@@ -5,6 +5,8 @@ set -e  # Exit immediately if a command exits with a non-zero status
 # Ensure .env defines: PORT
 source .env
 
+# Save the original working directory of the parent script
+export PARENT_SCRIPT_DIR=$(pwd)
 # Export environment variables for use in child scripts
 export UNITY_PROJECTS_DIR="./storage/unity-projects"
 export DOMAIN_URL="https://canvasunityplayer.hudini.online/"
