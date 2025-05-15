@@ -34,12 +34,12 @@ router.use("", baseRouter);
 // ALL ROUTES BELOW HERE ARE REQUIRED TO BE AUTHENTICATED
 router.use(canvasAuthHandler);
 
+router.use("/data", dataRouter);
+
 // Define endpoints using modularised routers
 router.use("", unityRouter);
 router.use("/register", registerRouter);
 router.use("/embed", embedRouter);
-
-router.use("/data", dataRouter);
 
 // Set static for public resources
 router.use(
