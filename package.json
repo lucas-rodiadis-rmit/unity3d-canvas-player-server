@@ -3,7 +3,7 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc && cpx \"src/resources/**/*\" dist/resources && cpx \"public/**/*\" dist/public",
 		"start": "node dist/server.js",
 		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
 		"lint": "eslint 'src/**/*.ts'",
@@ -24,6 +24,7 @@
 		"@types/express": "^5.0.1",
 		"@types/morgan": "^1.9.9",
 		"@types/node": "^22.14.0",
+		"cpx": "^1.5.0",
 		"dotenv": "^16.5.0",
 		"eslint": "^9.23.0",
 		"express": "^5.1.0",

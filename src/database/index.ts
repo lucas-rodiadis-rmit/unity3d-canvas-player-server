@@ -7,6 +7,10 @@ export function initDatabase(
 	try {
 		initialiseDb(migrate);
 	} catch (error) {
+		console.error(
+			"Error initialising the database:\n",
+			error
+		);
 		return false;
 	}
 	return true;

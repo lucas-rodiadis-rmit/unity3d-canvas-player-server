@@ -1,9 +1,6 @@
 import { Request, Response, Router } from "express";
-import path from "path";
 
-import { static as staticRoute } from "express";
-
-import * as fs from "fs";
+import { loadResource, RESOURCES_DIR } from "../constants";
 import { getUnityAppConfig } from "../database";
 
 const router = Router();
@@ -29,16 +26,15 @@ function playerFunction(req: Request, res: Response) {
 	const appConfig = getUnityAppConfig(appId);
 
 	// TODO: Log that someone created a session for the app
-	let reactEntryPoint: string = fs.readFileSync(
-		path.join(
-			process.cwd(),
-			"storage",
-			"unity_projects",
-			appId,
-			"index.html"
-		),
-		"utf-8"
+	let reactEntryPoint: string | null = loadResource(
+		"frontend/index.html"
 	);
+
+	if (reactEntryPoint === null) {
+		throw Error(
+			`Unable to read React entry point at ${RESOURCES_DIR}/index.html`
+		);
+	}
 
 	// TODO: Fix this to be robust against XSS scripting
 	reactEntryPoint = reactEntryPoint.replace(
@@ -53,17 +49,5 @@ function playerFunction(req: Request, res: Response) {
 // Serve Unity player at the 'unity-player' endpoint
 router.post("/unity-player/:appId", playerFunction);
 router.get("/unity-player/:appId", playerFunction);
-
-router.use(
-	"/unity-player",
-	staticRoute(
-		path.join(
-			process.cwd(),
-			"src",
-			"public",
-			"frontend"
-		)
-	)
-);
 
 export default router;

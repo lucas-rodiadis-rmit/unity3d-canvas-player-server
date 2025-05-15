@@ -6,7 +6,7 @@ import {
 	SuccessResponse
 } from "./types";
 
-import path from "path";
+import { resourcePath } from "../constants";
 
 /**
  * This file contains the registration router for handling OpenID configuration requests.
@@ -22,13 +22,7 @@ router.get(
 	"/lti-config.xml",
 	(_req: Request, res: Response) => {
 		res.set("Content-Type", "application/xml");
-		res.sendFile(
-			path.join(
-				process.cwd(),
-				"resources",
-				"lti-config.xml"
-			)
-		);
+		res.sendFile(resourcePath("lti-config.xml"));
 	}
 );
 
@@ -86,13 +80,7 @@ router.post(
 		console.log(JSON.stringify(req));
 
 		// Send html file for  registration
-		res.sendFile(
-			path.join(
-				process.cwd(),
-				"resources",
-				"index.html"
-			)
-		);
+		res.sendFile(resourcePath("index.html"));
 
 		// try {
 		// 	// Check for missing parameters

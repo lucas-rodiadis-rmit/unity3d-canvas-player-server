@@ -2,26 +2,15 @@ import fs from "fs";
 import path from "path";
 
 import Database from "better-sqlite3";
+import { resourcePath, storagePath } from "../constants";
 
 // const DB_ROOT_DIR: string = __dirname + "/database";
-const DB_MIGRATIONS_DIR: string = path.join(
-	process.cwd(),
-	"src",
-	"resources",
-	"migrations"
-);
-const DB_CURRENT_MIGRATION_FILE = path.join(
-	process.cwd(),
-	"src",
-	"resources",
-	"migrations",
-	"current_migration"
-);
+const DB_MIGRATIONS_DIR: string =
+	resourcePath("migrations");
 
-const DB_FILE: string = path.join(
-	process.cwd(),
-	"storage",
-	"database.db"
+const DB_FILE: string = storagePath("database.db");
+const DB_CURRENT_MIGRATION_FILE = storagePath(
+	"current_migration"
 );
 
 export const DB = new Database(DB_FILE);
