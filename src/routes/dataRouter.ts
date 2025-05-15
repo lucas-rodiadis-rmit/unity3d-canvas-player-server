@@ -4,8 +4,7 @@ import {
 	Router,
 	static as staticRoute
 } from "express";
-
-import { storagePath } from "../constants";
+import { UNITY_PROJECTS_FOLDER } from "../constants";
 
 const router = Router();
 
@@ -13,9 +12,6 @@ router.get("/", function (req: Request, res: Response) {
 	res.send("Hello world!");
 });
 
-router.use(
-	"/project/",
-	staticRoute(storagePath("unity_projects"))
-);
+router.use("/project/", staticRoute(UNITY_PROJECTS_FOLDER));
 
 export default router;
