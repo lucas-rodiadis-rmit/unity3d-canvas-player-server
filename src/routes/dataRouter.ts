@@ -12,6 +12,6 @@ router.get("/", function (req: Request, res: Response) {
 	res.send("Hello world!");
 });
 
-router.use("/project/", staticRoute(UNITY_PROJECTS_FOLDER));
+router.use("/project", staticRoute(UNITY_PROJECTS_FOLDER));
 
 export default router;
