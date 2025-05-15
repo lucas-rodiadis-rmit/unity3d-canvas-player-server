@@ -16,6 +16,7 @@ import {
 import morgan from "morgan";
 
 import baseRouter from "./baseRouter";
+import dataRouter from "./dataRouter";
 import embedRouter from "./embedRouter";
 import registerRouter from "./registerRouter";
 import unityRouter from "./unityRouter";
@@ -41,14 +42,10 @@ router.use("/embed", embedRouter);
 // Set static for public resources
 router.use(
 	"/",
-	staticRoute(
-		path.join(
-			process.cwd(),
-			"src",
-			"public"
-		)
-	)
+	staticRoute(path.join(process.cwd(), "src", "public"))
 );
+
+router.use("/data", dataRouter);
 
 export function initialiseRoutes(app: Express) {
 	// Set up the EJS templating engine for rendering views
