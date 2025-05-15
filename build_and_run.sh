@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
-DOMAIN_URL="https://canvasunityplayer.hudini.online/"
 
-
+# Port to use for the server
+PORT=8080
 # Kill existing process using the PORT (suppress errors if nothing is running)
 kill $(lsof -ti tcp:$PORT) 2>/dev/null || true
 # Uncomment below to force kill if needed

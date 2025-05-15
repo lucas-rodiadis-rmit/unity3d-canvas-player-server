@@ -1,5 +1,6 @@
-import { Request, Response, Router } from "express";
 import dotenv from "dotenv";
+import { Request, Response, Router } from "express";
+import { DOMAIN_URL } from "../constants";
 
 dotenv.config();
 
@@ -10,10 +11,10 @@ router.post(
 	async (req: Request, res: Response): Promise<void> => {
 		console.log("BODY:", req.body);
 
-		const returnUrl: string = req.body?.ext_content_return_url;
+		const returnUrl: string =
+			req.body?.ext_content_return_url;
 		const embedUrl: string =
-			process.env.DOMAIN_URL +
-			"unity-player/test123456";
+			DOMAIN_URL + "unity-player/test123456";
 
 		if (!returnUrl) {
 			console.warn(

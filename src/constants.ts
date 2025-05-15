@@ -1,6 +1,8 @@
 import fs from "fs";
 import Path from "path";
 
+export const DOMAIN_URL="https://canvasunityplayer.hudini.online/";
+
 export const STORAGE_DIR = Path.join(
 	process.cwd(),
 	"storage"
