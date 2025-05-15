@@ -39,13 +39,13 @@ router.use("", unityRouter);
 router.use("/register", registerRouter);
 router.use("/embed", embedRouter);
 
+router.use("/data", dataRouter);
+
 // Set static for public resources
 router.use(
 	"/",
 	staticRoute(path.join(process.cwd(), "src", "public"))
 );
-
-router.use("/data", dataRouter);
 
 export function initialiseRoutes(app: Express) {
 	// Set up the EJS templating engine for rendering views
