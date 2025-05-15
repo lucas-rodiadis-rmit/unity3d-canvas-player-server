@@ -1,8 +1,6 @@
 import {
 	Express,
 	json,
-	Request,
-	Response,
 	Router,
 	static as staticRoute,
 	urlencoded
@@ -36,14 +34,14 @@ router.use("", baseRouter);
 router.use(canvasAuthHandler);
 
 router.use("/data", dataRouter);
-
-router.use(
-	"/frontend/index.html",
-	(_req: Request, res: Response) => {
-		res.status(403).send("Forbidden");
-	}
-);
-
+//
+// router.use(
+// 	["/frontend/", "/frontend/index\.html"],
+// 	(req: Request, res: Response) => {
+// 		res.status(403).send("Forbidden");
+// 	}
+// );
+//
 router.use(
 	"/frontend",
 	staticRoute(resourcePath("frontend"))

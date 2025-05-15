@@ -33,6 +33,6 @@ rm -rf ./dist/*
 
 # Create dist AND resources directories if they dont exist
 mkdir -p ./dist/resources/
-mv ../client/dist/ ./dist/resources/frontend
+cp -ra ../client/dist/ ./dist/resources/frontend
 
 npm run build && npm start
