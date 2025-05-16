@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Canvas Unity Player</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				padding: 2rem;
+				max-width: 800px;
+				margin: auto;
+				background: #f9f9f9;
+			}
+
+			h1 {
+				text-align: center;
+			}
+
+			.input-group {
+				margin-bottom: 1rem;
+			}
+
+			.input-group label {
+				display: block;
+				margin-bottom: 0.25rem;
+				font-weight: bold;
+			}
+
+			.input-group input,
+			.input-group select {
+				width: 100%;
+				padding: 0.5rem;
+				font-size: 1rem;
+			}
+
+			.button-generate,
+			.copy-button {
+				padding: 0.5rem 1rem;
+				margin-top: 1rem;
+				font-size: 1rem;
+				cursor: pointer;
+				background-color: #4caf50;
+				border: none;
+				color: white;
+			}
+
+			.copy-button {
+				background-color: #2196f3;
+			}
+
+			.xml-box {
+				margin-top: 1rem;
+				background: #fff;
+				padding: 1rem;
+				border: 1px solid #ccc;
+				white-space: pre-wrap;
+				font-family: monospace;
+				max-height: 300px;
+				overflow-y: auto;
+			}
+
+			.instructions {
+				margin-top: 2rem;
+				background: #eef;
+				padding: 1rem;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Canvas Unity Player</h1>
+
+		<div class="input-group">
+			<label for="toolName">Tool Name:</label>
+			<input
+				type="text"
+				id="toolName"
+				value="Unity Player"
+			/>
+		</div>
+
+		<div class="input-group">
+			<label for="launchUrl">Launch URL:</label>
+			<input
+				type="text"
+				id="launchUrl"
+				value="https://canvasunityplayer.hudini.online/embed"
+			/>
+		</div>
+
+		<div class="input-group">
+			<label for="toolId">Tool ID:</label>
+			<select id="toolId">
+				<option value="public">public</option>
+				<option value="anonymous">anonymous</option>
+				<option value="name_only">name_only</option>
+			</select>
+		</div>
+
+		<div class="input-group">
+			<label for="privacyLevel">Privacy Level:</label>
+			<input
+				type="text"
+				id="privacyLevel"
+				value="public"
+			/>
+		</div>
+
+		<button
+			class="button-generate"
+			onclick="generateXML()"
+		>
+			Generate XML
+		</button>
+
+		<div class="xml-box" id="xmlBox"></div>
+		<button class="copy-button" onclick="copyXML()">
+			Copy XML
+		</button>
+
+		<div class="instructions">
+			<!-- TODO: Add more thorough and clear instructions, preferably with videos, gifs, pictures and other media to assist -->
+			<h3>How To Use:</h3>
+			<ol>
+				<li>
+					Fill the form (leave as default unless
+					required)
+				</li>
+				<li>Click Generate XML</li>
+				<li>Click Copy XML</li>
+				<li>
+					Paste XML into Canvas Shell as a LTI 1.1
+					External Tool/App
+				</li>
+			</ol>
+		</div>
+
+        <!-- TODO: move logic to server-side or into a separate file -->
+		<script>
+			function generateXML() {
+				const toolName =
+					document.getElementById(
+						"toolName"
+					).value;
+				const launchUrl =
+					document.getElementById(
+						"launchUrl"
+					).value;
+				const toolId =
+					document.getElementById("toolId").value;
+				const privacyLevel =
+					document.getElementById(
+						"privacyLevel"
+					).value;
+
+				const xml = `<%- registerXML %>`;
+
+				document.getElementById(
+					"xmlBox"
+				).textContent = xml;
+			}
+
+			function copyXML() {
+				const xmlText =
+					document.getElementById(
+						"xmlBox"
+					).textContent;
+				navigator.clipboard
+					.writeText(xmlText)
+					.then(() => {
+						alert("XML copied to clipboard!");
+					});
+			}
+		</script>
+	</body>
+</html>
+

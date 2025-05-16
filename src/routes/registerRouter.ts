@@ -6,6 +6,8 @@ import {
 	SuccessResponse
 } from "./types";
 
+import fs from "fs";
+
 import { resourcePath } from "../constants";
 
 /**
@@ -28,7 +30,7 @@ router.get(
 
 /**
  * GET /register
- * This endpoint is not allowed for GET requests.
+ * Returns register page, that provides XML file for registration.
  */
 router.get(
 	"/",
@@ -36,16 +38,18 @@ router.get(
 		const { openid_configuration, registration_token } =
 			req.query;
 
+		// Get contents of register.xml, that has values injected by the client-side javascript
+		// TODO: Determine if client-side javascript is better or to render the XML with server-side values
+		const registerXML : string = fs
+			.readFileSync(resourcePath("register.xml"))
+			.toString();
+
+		// TODO: See if this is still required
 		console.log("Incoming req.query:", req.query);
 
-		if (!openid_configuration || !registration_token) {
-			return res.status(400).json({
-				error: "Missing required parameters: openid_configuration and/or registration_token"
-			});
-		}
-
-		// Process the registration...
-		res.send("Registration Success");
+		// Send register page for XML LTI 1.1 registration and steps for registration
+		// TODO: Add variables to embed into view
+		res.render("register", { registerXML });
 	}
 );
 
