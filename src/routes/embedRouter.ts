@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Request, Response, Router } from "express";
-import { DOMAIN_URL } from "../constants";
+import appConfig from "../appConfig";
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ router.post(
 		const returnUrl: string =
 			req.body?.ext_content_return_url;
 		const embedUrl: string =
-			DOMAIN_URL + "unity-player/test123456";
+			appConfig.domainUrl + "unity-player/test123456";
 
 		if (!returnUrl) {
 			console.warn(

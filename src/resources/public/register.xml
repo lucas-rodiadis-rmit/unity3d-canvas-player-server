@@ -14,9 +14,9 @@
     <blti:launch_url>${launchUrl}</blti:launch_url>
     <blti:icon>https://your-public-server.com/assets/icon.png</blti:icon>
     <blti:extensions platform="canvas.instructure.com">
-        <lticm:property name="tool_id">${toolId}</lticm:property>
-        <lticm:property name="privacy_level">${privacyLevel}</lticm:property>
-        <lticm:property name="domain">${new URL(launchUrl).hostname}</lticm:property>
+        <lticm:property name="tool_id">__TOOL_ID__</lticm:property>
+        <lticm:property name="privacy_level">__PRIVACY_LEVEL__</lticm:property>
+        <lticm:property name="domain">__DOMAIN__</lticm:property>
         <lticm:property name="course_navigation[enabled]">true</lticm:property>
         <lticm:property name="course_navigation[default]">enabled</lticm:property>
         <lticm:property name="course_navigation[visibility]">admins</lticm:property>

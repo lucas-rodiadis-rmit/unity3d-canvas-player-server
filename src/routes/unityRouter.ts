@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 
-import { loadResource, RESOURCES_DIR } from "../constants";
+import appConfig from "../appConfig";
+import { loadResource } from "../constants";
 import { getUnityAppConfig } from "../database";
 
 const router = Router();
@@ -23,7 +24,7 @@ function playerFunction(req: Request, res: Response) {
 	// TODO: Check if the appId is valid and exists in the database
 	const appId: string = req.params.appId;
 	// TODO: Currently set only to use test123456 appId
-	const appConfig = getUnityAppConfig(appId);
+	const unityAppConfig = getUnityAppConfig(appId);
 
 	// TODO: Log that someone created a session for the app
 	let reactEntryPoint: string | null = loadResource(
@@ -32,14 +33,14 @@ function playerFunction(req: Request, res: Response) {
 
 	if (reactEntryPoint === null) {
 		throw Error(
-			`Unable to read React entry point at ${RESOURCES_DIR}/index.html`
+			`Unable to read React entry point at ${appConfig.resourcesDir}/index.html`
 		);
 	}
 
 	// TODO: Fix this to be robust against XSS scripting
 	reactEntryPoint = reactEntryPoint.replace(
 		"__UNITY_CONFIG__",
-		JSON.stringify(appConfig)
+		JSON.stringify(unityAppConfig)
 	);
 
 	res.set("Content-Type", "text/html");

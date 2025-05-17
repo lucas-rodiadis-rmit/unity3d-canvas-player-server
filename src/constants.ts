@@ -1,30 +1,16 @@
 import fs from "fs";
 import Path from "path";
 
-export const DOMAIN_URL="https://canvasunityplayer.hudini.online/";
-
-export const STORAGE_DIR = Path.join(
-	process.cwd(),
-	"storage"
-);
-
-export const UNITY_PROJECTS_DIR = Path.join(
-	STORAGE_DIR,
-	"unity_projects"
-);
-
-export const RESOURCES_DIR = Path.join(
-	__dirname,
-	"resources"
-);
-
-export const PUBLIC_DIR = resourcePath("public");
+import appConfig from "./appConfig";
 
 export function loadResource(
 	filepath: string
 ): string | null {
 	try {
-		const path = Path.join(RESOURCES_DIR, filepath);
+		const path = Path.join(
+			appConfig.resourcesDir,
+			filepath
+		);
 
 		const resource: string = fs.readFileSync(
 			path,
@@ -39,13 +25,13 @@ export function loadResource(
 }
 
 export function storagePath(path: string): string {
-	return Path.join(STORAGE_DIR, path);
+	return Path.join(appConfig.storageDir, path);
 }
 
 export function resourcePath(path: string): string {
-	return Path.join(RESOURCES_DIR, path);
+	return Path.join(appConfig.resourcesDir, path);
 }
 
 export function publicPath(path: string): string {
-	return Path.join(PUBLIC_DIR, path);
+	return Path.join(resourcePath("public"), path);
 }

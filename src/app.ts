@@ -1,5 +1,6 @@
 import express from "express";
 
+import cors from "cors";
 import { exit } from "process";
 
 import { errorHandler } from "./middlewares";
@@ -15,6 +16,10 @@ if (!initDatabase(true)) {
 }
 
 const app = express();
+
+if (true) {
+	app.use(cors());
+}
 
 // app.use(express.json());
 initialiseRoutes(app);

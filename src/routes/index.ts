@@ -14,6 +14,7 @@ import {
 import morgan from "morgan";
 
 import { resourcePath } from "../constants";
+import apiRouter from "./apiRouter";
 import baseRouter from "./baseRouter";
 import dataRouter from "./dataRouter";
 import embedRouter from "./embedRouter";
@@ -51,6 +52,8 @@ router.use(
 router.use("", unityRouter);
 router.use("/register", registerRouter);
 router.use("/embed", embedRouter);
+
+router.use("/api/v1", apiRouter);
 
 // Set static for public resources
 router.use("/", staticRoute(resourcePath("public")));
