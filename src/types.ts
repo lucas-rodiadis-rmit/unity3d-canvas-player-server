@@ -78,5 +78,4 @@ export function isCreateEmbedPayload(
 		) &&
 		["undefined", "number"].includes(typeof body.height)
 	);
-
-
+}

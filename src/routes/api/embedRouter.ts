@@ -20,6 +20,19 @@ dotenv.config();
 
 const router = Router();
 
+export let TEMPORARY_RETURN_URL = "UNSET_URL";
+
+export function setReturnUrl(url: string) {
+	console.log(
+		`CHANGING TEMP RETURN URL FROM ${TEMPORARY_RETURN_URL} TO ${url}`
+	);
+	TEMPORARY_RETURN_URL = url;
+}
+
+export function getReturnUrl() {
+	return TEMPORARY_RETURN_URL;
+}
+
 router.post(
 	"/",
 	async (req: Request, res: Response): Promise<void> => {
@@ -30,7 +43,9 @@ router.post(
 
 		const embedRequest = createReturnEmbed(req.body);
 
-		const returnUrl = "REPLACE_ME";
+		// TODO: Replace this with a real database call
+		const returnUrl = getReturnUrl();
+
 		const result = await axios.post(
 			returnUrl,
 			embedRequest
@@ -43,7 +58,6 @@ router.post(
 function createReturnEmbed(
 	payload: CreateEmbedPayload
 ): LTIEmbedRequestMessage {
-	// TODO: Lookup return URL from cache
 	const embedUrl: string =
 		appConfig.domainUrl + "unity-player/test123456";
 

@@ -3,6 +3,7 @@ import { Request, Response, Router } from "express";
 import { loadResource } from "../constants";
 
 import appConfig from "../appConfig";
+import { setReturnUrl } from "./api/embedRouter";
 
 const router = Router();
 
@@ -44,6 +45,9 @@ router.post(
 			return;
 		}
 
+		// TODO: Replace this with a real database call
+		setReturnUrl(returnUrl);
+
 		// TODO: Make this input the return url into cache and generate a token
 		returnFrontend(res, { token: "test_token" });
 	}
@@ -53,7 +57,7 @@ router.post(
 router.get(
 	"/embed",
 	function (req: Request, res: Response) {
-		const returnUrl: string = "TEST_RETURN_URL";
+		const returnUrl: string = `TEST_RETURN_URL-${new Date().toISOString()}`;
 		if (!returnUrl) {
 			console.warn(
 				"No ext_content_return_url found in request body."
@@ -61,6 +65,9 @@ router.get(
 			res.status(400).send("Missing return URL");
 			return;
 		}
+
+		// TODO: Replace this with a real database call
+		setReturnUrl(returnUrl);
 
 		// TODO: Make this input the return url into cache and generate a token
 		returnFrontend(res, { token: "test_token" });
