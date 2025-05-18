@@ -1,5 +1,6 @@
 # Storage has Unity project files and database
 storage/
+.env
 
 resources/player/
 dist/
