@@ -49,6 +49,24 @@ router.post(
 	}
 );
 
+// TODO: Make this route debug/test only
+router.get(
+	"/embed",
+	function (req: Request, res: Response) {
+		const returnUrl: string = "TEST_RETURN_URL";
+		if (!returnUrl) {
+			console.warn(
+				"No ext_content_return_url found in request body."
+			);
+			res.status(400).send("Missing return URL");
+			return;
+		}
+
+		// TODO: Make this input the return url into cache and generate a token
+		returnFrontend(res, { token: "test_token" });
+	}
+);
+
 router.get(
 	"/:page",
 	function (req: Request, res: Response) {

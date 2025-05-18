@@ -6,7 +6,11 @@ export interface UnityAppConfig {
 
 export interface CreateEmbedPayload {
 	token: string;
+
 	project_id: string;
+	presentation_type: "frame" | "iframe";
+	width?: number;
+	height?: number;
 
 	/* OTHER OPTIONS CAN BE ADDED HERE */
 	// allow_fullscreen: boolean;
@@ -22,6 +26,15 @@ export function isCreateEmbedPayload(
 		typeof body.token === "string" &&
 		// Check p_id
 		"project_id" in body &&
-		typeof body.project_id === "string"
+		typeof body.project_id === "string" &&
+		// Check presentation_type
+		["frame", "iframe"].includes(
+			body.presentation_type
+		) &&
+		// Check width and height
+		["undefined", "number"].includes(
+			typeof body.width
+		) &&
+		["undefined", "number"].includes(typeof body.height)
 	);
 }
