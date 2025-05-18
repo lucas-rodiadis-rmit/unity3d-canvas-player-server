@@ -17,8 +17,7 @@ import { resourcePath } from "../constants";
 import apiRouter from "./apiRouter";
 import baseRouter from "./baseRouter";
 import dataRouter from "./dataRouter";
-import embedRouter from "./embedRouter";
-import registerRouter from "./registerRouter";
+import frontendRouter from "./frontendRouter";
 import unityRouter from "./unityRouter";
 
 const router = Router();
@@ -43,20 +42,16 @@ router.use("/data", dataRouter);
 // 	}
 // );
 //
-router.use(
-	"/frontend",
-	staticRoute(resourcePath("frontend"))
-);
 
 // Define endpoints using modularised routers
 router.use("", unityRouter);
-router.use("/register", registerRouter);
-router.use("/embed", embedRouter);
 
 router.use("/api/v1", apiRouter);
 
 // Set static for public resources
+router.use("/", staticRoute(resourcePath("frontend")));
 router.use("/", staticRoute(resourcePath("public")));
+router.use("/", frontendRouter);
 
 export function initialiseRoutes(app: Express) {
 	// Set up the EJS templating engine for rendering views
