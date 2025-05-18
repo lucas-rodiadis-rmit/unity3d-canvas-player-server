@@ -14,7 +14,8 @@ import {
 import morgan from "morgan";
 
 import { resourcePath } from "../constants";
-import apiRouter from "./apiRouter";
+
+import apiRouter from "./api";
 import baseRouter from "./baseRouter";
 import dataRouter from "./dataRouter";
 import frontendRouter from "./frontendRouter";

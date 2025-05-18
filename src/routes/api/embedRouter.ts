@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import { Request, Response, Router } from "express";
-import appConfig from "../appConfig";
+import appConfig from "../../appConfig";
+import { isCreateEmbedPayload } from "../../types";
 
 dotenv.config();
 
@@ -9,10 +10,14 @@ const router = Router();
 router.post(
 	"/",
 	async (req: Request, res: Response): Promise<void> => {
-		console.log("BODY:", req.body);
+		if (!isCreateEmbedPayload(req.body)) {
+			res.status(400);
+			return;
+		}
 
-		const returnUrl: string =
-			req.body?.ext_content_return_url;
+		// TODO: Lookup return URL from cache
+		const returnUrl = "REPLACE_ME";
+
 		const embedUrl: string =
 			appConfig.domainUrl + "unity-player/test123456";
 
