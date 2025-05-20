@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e  # Exit immediately if a command exits with a non-zero status
 
-
 # Port to use for the server
 PORT=8080
 # Kill existing process using the PORT (suppress errors if nothing is running)
@@ -25,4 +24,5 @@ rm -rf ./dist/*
 mkdir -p ./dist/resources/
 cp -ra ../client/dist/ ./dist/resources/frontend
 
+mkdir -p ./storage
 npm run build && npm start
