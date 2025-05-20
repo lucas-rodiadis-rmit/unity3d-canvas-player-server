@@ -7,7 +7,12 @@ import { setReturnUrl } from "./api/embedRouter";
 
 const router = Router();
 
-function returnFrontend<T>(res: Response, data?: T): void {
+interface ReactAppData {
+	returnUrl?: string;
+	token?: string;
+}
+
+function returnReactApp(res: Response, data?: ReactAppData): void {
 	let reactEntryPoint: string | null = loadResource(
 		"frontend/index.html"
 	);
@@ -28,12 +33,12 @@ function returnFrontend<T>(res: Response, data?: T): void {
 	res.send(reactEntryPoint);
 }
 
-// TODO: Clean this up later potentially
+/**
+ * Route to handle LTI Embed selection requests
+ */
 router.post(
 	"/embed",
 	function (req: Request, res: Response) {
-		console.log("BODY:", req.body);
-
 		const returnUrl: string =
 			req.body?.ext_content_return_url;
 
@@ -49,7 +54,7 @@ router.post(
 		setReturnUrl(returnUrl);
 
 		// TODO: Make this input the return url into cache and generate a token
-		returnFrontend(res, { token: "test_token" });
+		returnReactApp(res, { returnUrl: returnUrl, token: "test_token" });
 	}
 );
 
@@ -70,14 +75,14 @@ router.get(
 		setReturnUrl(returnUrl);
 
 		// TODO: Make this input the return url into cache and generate a token
-		returnFrontend(res, { token: "test_token" });
+		returnReactApp(res, { token: "test_token" });
 	}
 );
 
 router.get(
 	"/:page",
 	function (req: Request, res: Response) {
-		returnFrontend(res);
+		returnReactApp(res);
 	}
 );
 
