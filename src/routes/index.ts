@@ -55,10 +55,6 @@ router.use("/", staticRoute(resourcePath("public")));
 router.use("/", frontendRouter);
 
 export function initialiseRoutes(app: Express) {
-	// Set up the EJS templating engine for rendering views
-	app.set("view engine", "ejs");
-	app.set("views", resourcePath("views"));
-
 	// Automatically parse application/x-www-form-urlencoded request bodies
 	app.use(urlencoded({ extended: true }));
 
