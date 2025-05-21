@@ -2,8 +2,9 @@ import { Request, Response, Router } from "express";
 
 import appConfig from "../appConfig";
 import { loadResource } from "../constants";
-import unityappController from "../database/unityapp.controller";
 import { unityAppConfigFrom } from "../unity";
+
+import { unityappController } from "../database";
 
 const router = Router();
 
@@ -12,13 +13,6 @@ function playerFunction(req: Request, res: Response) {
 
 	if (!req.params.appId) {
 		res.status(400).send("Bad request.");
-		return;
-	}
-	// Stub for clinic sim
-	else if (req.params.appId != "test123456") {
-		res.status(404).send(
-			`No app found for ${req.params.appId}.`
-		);
 		return;
 	}
 

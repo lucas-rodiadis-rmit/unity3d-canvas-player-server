@@ -1,9 +1,7 @@
 import { initialiseDb } from "./internals";
 
-export {
-	addUnityProjectFile,
-	getUnityAppConfig
-} from "./unityapp.controller";
+export { default as unityappController } from "./unityapp.controller";
+export { default as userController } from "./user.controller";
 
 export function initDatabase(
 	migrate: boolean = true
