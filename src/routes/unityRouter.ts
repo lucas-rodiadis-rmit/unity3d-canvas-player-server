@@ -2,7 +2,8 @@ import { Request, Response, Router } from "express";
 
 import appConfig from "../appConfig";
 import { loadResource } from "../constants";
-import { getUnityAppConfig } from "../database";
+import unityappController from "../database/unityapp.controller";
+import { unityAppConfigFrom } from "../unity";
 
 const router = Router();
 
@@ -21,10 +22,22 @@ function playerFunction(req: Request, res: Response) {
 		return;
 	}
 
-	// TODO: Check if the appId is valid and exists in the database
+	// TODO: Check if the appId is valid
 	const appId: string = req.params.appId;
-	// TODO: Currently set only to use test123456 appId
-	const unityAppConfig = getUnityAppConfig(appId);
+	const app = unityappController.getUnityApp(appId);
+	if (app === null) {
+		res.status(404).send(
+			`Unable to find project with ID ${appId}`
+		);
+		return;
+	}
+
+	const unityAppConfig = unityAppConfigFrom(app);
+	if (unityAppConfig === null) {
+		throw Error(
+			"Unable to create config from Unity app."
+		);
+	}
 
 	// TODO: Log that someone created a session for the app
 	let reactEntryPoint: string | null = loadResource(

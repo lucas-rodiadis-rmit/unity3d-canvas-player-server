@@ -1,17 +1,4 @@
-export interface UnityAppConfig {
-	id: string;
-
-	buildUrl: string;
-}
-
-export interface UnityApp {
-	id: string;
-	name: string;
-	uploaded: Date;
-
-	owner: Instructor;
-	files: UnityProjectFile[];
-}
+import { UnityProject } from "./unity";
 
 export type UserType = "INSTRUCTOR" | "STUDENT";
 
@@ -26,23 +13,7 @@ export interface Student extends User {
 
 export interface Instructor extends User {
 	type: "INSTRUCTOR";
-	projects: UnityProject[];
-}
-
-export interface UnityProject {
-	project_id: string;
-	user_id: string;
-
-	uploaded: Date;
-	name: string;
-	root_filepath: string;
-}
-
-export interface UnityProjectFile {
-	project_id: string;
-	filepath: "";
-	filesize: number;
-	uploaded: Date;
+	projects?: UnityProject[];
 }
 
 export interface CreateEmbedPayload {

@@ -1,10 +1,10 @@
-import { UnityProject, UnityProjectFile } from "../types";
+import { UnityProject, UnityProjectFile } from "../unity";
 import { DB } from "./internals";
 
 const UNITY_PROJECT_TABLE = "unity_project";
 const UNITY_PROJECT_FILE_TABLE = "unity_project_file";
 
-export function getUnityProject(
+function getUnityProject(
 	project_id: string
 ): UnityProject | null {
 	const project: any = DB.prepare(
@@ -23,7 +23,7 @@ export function getUnityProject(
 	};
 }
 
-export function getFilesForProject(
+function getFilesForProject(
 	project_id: string
 ): UnityProjectFile[] | null {
 	try {
@@ -46,3 +46,5 @@ export function getFilesForProject(
 	}
 	return null;
 }
+
+export default { getUnityProject, getFilesForProject };
