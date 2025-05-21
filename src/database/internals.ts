@@ -176,3 +176,12 @@ export interface DBInternalInstructor {
 	user_id: string;
 	email?: string;
 }
+
+export interface DBInternalUnityProject {
+	project_id: string;
+	user_id: string;
+	name: string;
+
+	uploaded: number;
+	root_filepath: string;
+}

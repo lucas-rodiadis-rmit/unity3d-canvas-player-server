@@ -1,3 +1,4 @@
+import unityappRepository from "./unityapp.repository";
 import userRepository from "./user.repository";
 
 function seed(): boolean {
@@ -21,6 +22,34 @@ function seed(): boolean {
 			instructor[1],
 			true
 		);
+		if (result.status !== "SUCCESS") {
+			console.error("Error inserting the instructor");
+			return false;
+		}
+	}
+
+	const seedProjects = [
+		[
+			"test_instructor_1",
+			"ClinicSim",
+			"/test123456",
+			"test123456"
+		]
+	];
+
+	for (const project of seedProjects) {
+		console.log(
+			`Inserting seed project ${project.toString()}`
+		);
+
+		const result = unityappRepository.addUnityProject(
+			project[0],
+			project[1],
+			project[2],
+			true,
+			project[3]
+		);
+
 		if (result.status !== "SUCCESS") {
 			console.error("Error inserting the instructor");
 			return false;

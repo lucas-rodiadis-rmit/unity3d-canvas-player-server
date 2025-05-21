@@ -5,9 +5,11 @@ import { unityAppConfigFrom } from "../../unity";
 const router = Router();
 
 router.get("/:id", function (req: Request, res: Response) {
-	const config = unityAppConfigFrom(
-		unityappController.getUnityApp(req.params.id)
+	const app = unityappController.getUnityApp(
+		req.params.id
 	);
+
+	const config = unityAppConfigFrom(app);
 
 	if (config === null) {
 		res.status(404).send("No config available.");

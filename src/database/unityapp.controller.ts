@@ -17,10 +17,15 @@ function addUnityProjectFile(
 function getUnityApp(project_id: string): UnityApp | null {
 	const project =
 		unityappRepository.getUnityProject(project_id);
-	if (project == null) return null;
+	if (project.status !== "SUCCESS") {
+		console.log(
+			`Failed to get Unity project by ID ${project_id}`
+		);
+		return null;
+	}
 
 	const instructor = userRepo.getInstructor(
-		project.user_id
+		project.data.user_id
 	);
 
 	if (instructor.status !== "SUCCESS") return null;
@@ -33,9 +38,9 @@ function getUnityApp(project_id: string): UnityApp | null {
 
 	return {
 		id: project_id,
-		name: project.name,
+		name: project.data.name,
 
-		uploaded: project.uploaded,
+		uploaded: project.data.uploaded,
 
 		owner: instructor.data,
 		files: files.data

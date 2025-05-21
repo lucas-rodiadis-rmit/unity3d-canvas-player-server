@@ -2,28 +2,88 @@ import { UnityProject, UnityProjectFile } from "../unity";
 
 import {
 	DB,
+	DBInternalUnityProject,
 	UNITY_PROJECT_FILE_TABLE,
 	UNITY_PROJECT_TABLE
 } from "./internals";
 
-import { DBGetManyResult } from "./types";
+import {
+	DBCreateResult,
+	DBGetManyResult,
+	DBGetResult
+} from "./types";
+
+import uuid4 from "uuid4";
 
 function getUnityProject(
 	project_id: string
-): UnityProject | null {
-	const project: any = DB.prepare(
+): DBGetResult<UnityProject> {
+	const project = DB.prepare<
+		string,
+		DBInternalUnityProject
+	>(
 		`SELECT * FROM ${UNITY_PROJECT_TABLE} p WHERE p.project_id = ?`
 	).get(project_id);
 
-	if (!project) return null;
+	if (!project) return { status: "FAILURE" };
 
 	return {
-		project_id: project.project_id,
-		user_id: project.user_id,
+		status: "SUCCESS",
+		data: {
+			project_id: project.project_id,
+			user_id: project.user_id,
 
-		uploaded: project.uploaded,
-		name: project.display_name,
-		root_filepath: project.root_filepath
+			uploaded: new Date(project.uploaded),
+			name: project.name,
+			root_filepath: project.root_filepath
+		}
+	};
+}
+
+export function addUnityProject(
+	userId: string,
+	name: string,
+	rootFilepath: string,
+	allowUpsert?: boolean,
+	project_id?: string
+): DBCreateResult<UnityProject> {
+	const stmt = DB.prepare<
+		DBInternalUnityProject,
+		DBInternalUnityProject
+	>(
+		`INSERT INTO ${UNITY_PROJECT_TABLE} (project_id, name, user_id, uploaded, root_filepath)
+			VALUES (@project_id, @name, @user_id, @uploaded, @root_filepath)
+			${allowUpsert ? "ON CONFLICT(project_id) DO UPDATE SET name = excluded.name, user_id = excluded.user_id, uploaded = excluded.uploaded, root_filepath = excluded.root_filepath" : ""}
+		RETURNING *`
+	);
+
+	if (!project_id) {
+		project_id = uuid4();
+	}
+
+	const unityProject = stmt.get({
+		user_id: userId,
+		name: name,
+		uploaded: new Date().getUTCMilliseconds(),
+		project_id: project_id,
+		root_filepath: rootFilepath
+	});
+
+	if (!unityProject)
+		return {
+			status: "ERROR",
+			message: "Unknown error."
+		};
+
+	return {
+		status: "SUCCESS",
+		data: {
+			project_id: unityProject.project_id,
+			name: unityProject.name,
+			user_id: unityProject.user_id,
+			root_filepath: unityProject.root_filepath,
+			uploaded: new Date(unityProject.uploaded)
+		}
 	};
 }
 
@@ -58,4 +118,8 @@ function getFilesForProject(
 	}
 }
 
-export default { getUnityProject, getFilesForProject };
+export default {
+	getUnityProject,
+	addUnityProject,
+	getFilesForProject
+};
