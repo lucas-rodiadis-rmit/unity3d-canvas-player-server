@@ -1,27 +1,28 @@
+BEGIN TRANSACTION;
+
 CREATE TABLE instructor (
     user_id TEXT PRIMARY KEY,
     email TEXT NOT NULL
 ) WITHOUT ROWID;
 
 CREATE TABLE unity_project (
-	project_id: string;
+    project_id TEXT,
     user_id TEXT NOT NULL,
 
     uploaded DATE NOT NULL,
     display_name TEXT NOT NULL,
     root_filepath TEXT NOT NULL,
-    PRIMARY KEY (project_id)
-    FOREIGN KEY (user_id) REFERENCES instructor (user_id),
+    PRIMARY KEY (project_id),
+    FOREIGN KEY (user_id) REFERENCES instructor (user_id)
 ) WITHOUT ROWID;
 
 CREATE TABLE unity_project_file (
-	project_id: string;
+    project_id TEXT,
     relative_filepath TEXT,
     filesize INTEGER NOT NULL,
     uploaded DATE NOT NULL,
-	PRIMARY KEY(project_id),
-	PRIMARY KEY(relative_filepath),
-    FOREIGN KEY (project_id) REFERENCES instructor (project_id),
+    PRIMARY KEY (project_id, relative_filepath),
+    FOREIGN KEY (project_id) REFERENCES instructor (project_id)
 ) WITHOUT ROWID;
 
 -- CREATE TABLE embed_instance (
@@ -30,3 +31,5 @@ CREATE TABLE unity_project_file (
 --     FOREIGN KEY (user_id) REFERENCES instructor (user_id),
 --     PRIMARY KEY (user_id, course_id)
 -- ) WITHOUT ROWID;
+
+COMMIT;

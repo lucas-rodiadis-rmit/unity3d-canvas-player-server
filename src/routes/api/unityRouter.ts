@@ -1,11 +1,13 @@
 import { Request, Response, Router } from "express";
-
-import { getUnityAppConfig } from "../../database";
+import { unityappController } from "../../database";
+import { unityAppConfigFrom } from "../../unity";
 
 const router = Router();
 
 router.get("/:id", function (req: Request, res: Response) {
-	const config = getUnityAppConfig(req.params.id);
+	const config = unityAppConfigFrom(
+		unityappController.getUnityApp(req.params.id)
+	);
 
 	if (config === null) {
 		res.status(404);

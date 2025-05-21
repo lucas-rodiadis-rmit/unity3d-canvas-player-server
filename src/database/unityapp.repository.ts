@@ -1,9 +1,12 @@
 import { UnityProject, UnityProjectFile } from "../unity";
-import { DB } from "./internals";
-import { DBGetManyResult } from "./types";
 
-const UNITY_PROJECT_TABLE = "unity_project";
-const UNITY_PROJECT_FILE_TABLE = "unity_project_file";
+import {
+	DB,
+	UNITY_PROJECT_FILE_TABLE,
+	UNITY_PROJECT_TABLE
+} from "./internals";
+
+import { DBGetManyResult } from "./types";
 
 function getUnityProject(
 	project_id: string

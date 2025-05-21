@@ -7,7 +7,7 @@ export function initDatabase(
 	migrate: boolean = true
 ): boolean {
 	try {
-		initialiseDb(migrate);
+		return initialiseDb(migrate);
 	} catch (error) {
 		console.error(
 			"Error initialising the database:\n",
@@ -15,5 +15,4 @@ export function initDatabase(
 		);
 		return false;
 	}
-	return true;
 }

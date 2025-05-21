@@ -166,3 +166,8 @@ export function initialiseDb(
 }
 
 process.on("exit", () => DB.close());
+
+export const UNITY_PROJECT_TABLE = "unity_project";
+export const UNITY_PROJECT_FILE_TABLE =
+	"unity_project_file";
+export const INSTRUCTOR_TABLE = "instructor";

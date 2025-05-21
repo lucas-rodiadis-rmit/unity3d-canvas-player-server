@@ -33,8 +33,10 @@ export interface UnityProject {
 }
 
 export function unityAppConfigFrom(
-	app: UnityApp
+	app: UnityApp | null
 ): UnityAppConfig | null {
+	if (app === null) return null;
+
 	// TODO: Implement extracting the app config from the project in the database
 	if (app.id === "test123456") {
 		const clinicSimPath =
