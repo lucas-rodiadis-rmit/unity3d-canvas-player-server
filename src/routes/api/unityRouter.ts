@@ -10,7 +10,7 @@ router.get("/:id", function (req: Request, res: Response) {
 	);
 
 	if (config === null) {
-		res.status(404);
+		res.status(404).send("No config available.");
 		return;
 	}
 

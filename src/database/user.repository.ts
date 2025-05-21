@@ -1,5 +1,9 @@
 import { Instructor } from "../types";
-import { DB, INSTRUCTOR_TABLE } from "./internals";
+import {
+	DB,
+	DBInternalInstructor,
+	INSTRUCTOR_TABLE
+} from "./internals";
 import { DBGetResult } from "./types";
 
 function getInstructor(
@@ -15,15 +19,36 @@ function getInstructor(
 
 	return {
 		status: "SUCCESS",
-		data: { user_id: row.user_id, type: "INSTRUCTOR" }
+		data: { userId: row.user_id, type: "INSTRUCTOR" }
 	};
 }
 
 function addInstructor(
-	userId: string
+	userId: string,
+	email?: string,
+	allowUpsert?: boolean
 ): DBGetResult<Instructor> {
-	// TODO: Do database query here and get the result
-	return { status: "FAILURE" };
+	const stmt = DB.prepare<
+		{ userId: string; email?: string },
+		DBInternalInstructor
+	>(
+		`INSERT INTO ${INSTRUCTOR_TABLE} (user_id, email)
+			VALUES (@userId, @email)
+			ON CONFLICT(user_id) DO UPDATE SET 
+				email = excluded.email
+		RETURNING *`
+	);
+
+	const instructor = stmt.get({ userId, email });
+	if (!instructor) return { status: "FAILURE" };
+
+	return {
+		status: "SUCCESS",
+		data: {
+			type: "INSTRUCTOR",
+			userId: instructor.user_id
+		}
+	};
 }
 
 export default { getInstructor, addInstructor };

@@ -8,7 +8,7 @@ import { initialiseRoutes } from "./routes";
 
 import { initDatabase } from "./database";
 
-if (!initDatabase(true)) {
+if (!initDatabase(true, true)) {
 	console.error(
 		"\nUnable to initialise the database. Exiting now."
 	);

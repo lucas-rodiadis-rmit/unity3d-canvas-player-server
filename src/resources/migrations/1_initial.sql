@@ -2,7 +2,7 @@ BEGIN TRANSACTION;
 
 CREATE TABLE instructor (
     user_id TEXT PRIMARY KEY,
-    email TEXT NOT NULL
+    email TEXT
 ) WITHOUT ROWID;
 
 CREATE TABLE unity_project (
@@ -22,7 +22,7 @@ CREATE TABLE unity_project_file (
     filesize INTEGER NOT NULL,
     uploaded DATE NOT NULL,
     PRIMARY KEY (project_id, relative_filepath),
-    FOREIGN KEY (project_id) REFERENCES instructor (project_id)
+    FOREIGN KEY (project_id) REFERENCES unity_project (project_id)
 ) WITHOUT ROWID;
 
 -- CREATE TABLE embed_instance (

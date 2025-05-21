@@ -3,7 +3,7 @@ import { UnityProject } from "./unity";
 export type UserType = "INSTRUCTOR" | "STUDENT";
 
 export interface User {
-	user_id: string;
+	userId: string;
 	type: UserType;
 }
 
