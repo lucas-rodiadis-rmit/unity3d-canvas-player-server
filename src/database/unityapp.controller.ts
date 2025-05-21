@@ -1,4 +1,4 @@
-import { UnityApp, UnityProjectFile } from "../unity";
+import { UnityApp } from "../unity";
 import unityappRepository from "./unityapp.repository";
 
 import userRepo from "./user.repository";
@@ -22,11 +22,14 @@ function getUnityApp(project_id: string): UnityApp | null {
 	const instructor = userRepo.getInstructor(
 		project.user_id
 	);
-	if (instructor === null) return null;
 
-	const files: UnityProjectFile[] | null =
+	if (instructor.status !== "SUCCESS") return null;
+
+	const files =
 		unityappRepository.getFilesForProject(project_id);
-	if (files === null) return null;
+	if (files.status === "ERROR") {
+		throw Error(files.message);
+	}
 
 	return {
 		id: project_id,
@@ -34,8 +37,8 @@ function getUnityApp(project_id: string): UnityApp | null {
 
 		uploaded: project.uploaded,
 
-		owner: instructor,
-		files: files
+		owner: instructor.data,
+		files: files.data
 	};
 }
 
