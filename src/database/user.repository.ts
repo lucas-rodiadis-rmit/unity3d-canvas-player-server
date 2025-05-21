@@ -34,8 +34,7 @@ function addInstructor(
 	>(
 		`INSERT INTO ${INSTRUCTOR_TABLE} (user_id, email)
 			VALUES (@userId, @email)
-			ON CONFLICT(user_id) DO UPDATE SET 
-				email = excluded.email
+			${allowUpsert ? "ON CONFLICT(user_id) DO UPDATE SET email = excluded.email" : ""}
 		RETURNING *`
 	);
 
