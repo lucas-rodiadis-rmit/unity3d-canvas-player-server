@@ -29,6 +29,17 @@ export function getUnityAppConfig(
 	return null;
 }
 
+export function addUnityProjectFile(
+	// ID of the project the file is being added to
+	project_id: string,
+	// The relative filepath of the file  (eg. Build/buildweb.loader.js)
+	filepath: string,
+	// The size of the file as an unsigned integer  (eg. 4096 <= 4kb)
+	filesize: number
+): void {
+	// TODO: Implement
+}
+
 /*
 export function getUnityApp(
 	project_id: string
