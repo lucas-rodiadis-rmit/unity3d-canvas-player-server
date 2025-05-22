@@ -30,6 +30,16 @@ router.get("/:id", function (req: Request, res: Response) {
 	res.send(config);
 });
 
+router.get("/", function (req: Request, res: Response) {
+	const apps = unityappController.getAllUnityApps();
+
+	const configs = apps
+		.map((app) => unityAppConfigFrom(app))
+		.filter((config) => config !== null);
+
+	res.send(configs);
+});
+
 router.post(
 	"/upload",
 	receiver.array("files"),

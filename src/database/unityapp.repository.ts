@@ -41,6 +41,24 @@ function getUnityProject(
 	};
 }
 
+function getAllUnityProjects(): DBGetManyResult<UnityProject> {
+	const projects = DB.prepare<{}, DBInternalUnityProject>(
+		`SELECT * FROM ${UNITY_PROJECT_TABLE};`
+	).all({});
+
+	return {
+		status: "SUCCESS",
+		data: projects.map((project) => ({
+			project_id: project.project_id,
+			user_id: project.user_id,
+
+			uploaded: new Date(project.uploaded),
+			name: project.name,
+			root_filepath: project.root_filepath
+		}))
+	};
+}
+
 export function addUnityProject(
 	userId: string,
 	name: string,
@@ -165,6 +183,7 @@ function getFilesForProject(
 
 export default {
 	getUnityProject,
+	getAllUnityProjects,
 	addUnityProject,
 	getFilesForProject,
 	addFileToProject

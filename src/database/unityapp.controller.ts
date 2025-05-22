@@ -63,6 +63,42 @@ function getUnityApp(project_id: string): UnityApp | null {
 	};
 }
 
+function getAllUnityApps(): UnityApp[] {
+	const projects =
+		unityappRepository.getAllUnityProjects();
+
+	if (projects.status !== "SUCCESS") return [];
+
+	return projects.data
+		.map((project) => {
+			const instructor = userRepo.getInstructor(
+				project.user_id
+			);
+
+			if (instructor.status !== "SUCCESS")
+				return null;
+
+			const files =
+				unityappRepository.getFilesForProject(
+					project.project_id
+				);
+			if (files.status === "ERROR") {
+				throw Error(files.message);
+			}
+
+			return {
+				id: project.project_id,
+				name: project.name,
+
+				uploaded: project.uploaded,
+
+				owner: instructor.data,
+				files: files.data
+			};
+		})
+		.filter((app) => app !== null);
+}
+
 function createUnityApp(
 	userId: string, // Instructor
 	rootFilepath: string,
@@ -104,5 +140,6 @@ function createUnityApp(
 export default {
 	createUnityApp,
 	addUnityProjectFile,
-	getUnityApp
+	getUnityApp,
+	getAllUnityApps
 };
