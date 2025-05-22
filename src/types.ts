@@ -1,7 +1,4 @@
-import {
-	CreateUnityProjectFilePayload,
-	UnityProject
-} from "./unity";
+import { UnityProject, UnityProjectFile } from "./unity";
 
 export type UserType = "INSTRUCTOR" | "STUDENT";
 
@@ -17,6 +14,58 @@ export interface Student extends User {
 export interface Instructor extends User {
 	type: "INSTRUCTOR";
 	projects?: UnityProject[];
+}
+
+function checkPayload(
+	obj: any,
+	members: Readonly<Array<[string, string, boolean]>>
+) {
+	if (
+		typeof obj !== "object" ||
+		obj === undefined ||
+		obj === null
+	)
+		return false;
+
+	for (const [key, type, required] of members) {
+		if (!(key in obj)) {
+			console.debug(
+				`Missing key "${key}" required in ${members.map((k) => k[0])}`
+			);
+
+			console.debug("Object tested: ", obj);
+
+			return false;
+		}
+
+		const validTypes = [type];
+		if (!required) validTypes.push("undefined");
+
+		if (!validTypes.includes(typeof obj[key])) {
+			console.debug(
+				`Type mismatch: .${key} is type ${typeof obj[key]}, but one of ${validTypes} was expected.`
+			);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+export type CreateUnityProjectFilePayload = Omit<
+	UnityProjectFile,
+	"project_id" | "uploaded"
+>;
+
+export function isCreateUnityProjectFilePayload(
+	obj: any
+): obj is CreateUnityProjectFilePayload {
+	const keys: Array<[string, string, boolean]> = [
+		["filepath", "string", true],
+		["filesize", "number", true]
+	] as const;
+
+	return checkPayload(obj, keys);
 }
 
 export interface CreateUnityAppPayload {
@@ -37,30 +86,6 @@ export interface CreateUnityAppPayload {
 	showFPS: boolean;
 }
 
-function checkPayload(
-	obj: any,
-	members: Readonly<Array<[string, string, boolean]>>
-) {
-	if (
-		typeof obj !== "object" ||
-		obj === undefined ||
-		obj === null
-	)
-		return false;
-
-	for (const [key, type, required] of members) {
-		if (!(key in obj)) return false;
-
-		const validTypes = [type];
-		if (!required) validTypes.push("undefined");
-
-		if (!validTypes.includes(typeof obj[key]))
-			return false;
-	}
-
-	return true;
-}
-
 export function isCreateUnityAppPayload(
 	body: any
 ): body is CreateUnityAppPayload {
@@ -73,6 +98,21 @@ export function isCreateUnityAppPayload(
 		["embedWidth", "number", false],
 		["embedHeight", "number", false]
 	] as const;
+
+	if (!body.files || !Array.isArray(body.files)) {
+		console.debug("files is not a valid array.");
+		return false;
+	}
+
+	for (const file of body.files) {
+		if (!isCreateUnityProjectFilePayload(file)) {
+			console.debug(
+				"Invalid CreateUnityProjectFilePayload found: ",
+				file
+			);
+			return false;
+		}
+	}
 
 	return checkPayload(body, keys);
 }

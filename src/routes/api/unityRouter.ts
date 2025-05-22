@@ -4,7 +4,7 @@ import {
 	userController
 } from "../../database";
 import { isCreateUnityAppPayload } from "../../types";
-import { unityAppConfigFrom } from "../../unity";
+import { UnityApp, unityAppConfigFrom } from "../../unity";
 
 const router = Router();
 
@@ -32,8 +32,6 @@ router.post(
 		let instructor =
 			userController.getInstructor(token);
 
-		console.log("Fetched instructor: ", instructor);
-
 		// If the requested instructor doesn't exist in the database
 		if (instructor === null) {
 			instructor = userController.addInstructor(
@@ -59,11 +57,25 @@ router.post(
 		// TODO: Create the folder here in storage
 		const rootFilepath = "/TEST/ROOT/FILEPATH";
 
-		unityappController.createUnityApp(
-			token,
-			rootFilepath,
-			req.body
-		);
+		let unityApp: UnityApp | null = null;
+
+		try {
+			unityApp = unityappController.createUnityApp(
+				token,
+				rootFilepath,
+				req.body
+			);
+
+			if (unityApp === null) throw Error("");
+		} catch (error) {
+			console.debug(
+				"Internal error message: ",
+				(error as Error).message
+			);
+			throw Error("Unable to create Unity app.");
+		}
+
+		res.status(201).send(unityApp);
 	}
 );
 
