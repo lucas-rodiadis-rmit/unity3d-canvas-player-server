@@ -83,7 +83,10 @@ function createUnityApp(
 		if (
 			!unityappController.addUnityProjectFile(
 				result.data.project_id,
-				file
+				{
+					filepath: file.webkitRelativePath,
+					filesize: file.size
+				}
 			)
 		) {
 			return null;

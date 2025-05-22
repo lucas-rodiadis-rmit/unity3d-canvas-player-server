@@ -6,7 +6,14 @@ import {
 import { isCreateUnityAppPayload } from "../../types";
 import { UnityApp, unityAppConfigFrom } from "../../unity";
 
+import multer from "multer";
+
 const router = Router();
+
+const receiver = multer({
+	dest: "./storage/unity_projects",
+	preservePath: true
+});
 
 router.get("/:id", function (req: Request, res: Response) {
 	const app = unityappController.getUnityApp(
@@ -25,6 +32,7 @@ router.get("/:id", function (req: Request, res: Response) {
 
 router.post(
 	"/upload",
+	receiver.array("files"),
 	function (req: Request, res: Response) {
 		// TODO: Make this fetch the users token so we can say they uploaded the project
 		const token = "test_instructor_1";
@@ -54,8 +62,17 @@ router.post(
 			return;
 		}
 
+		if (!req.files) {
+			throw Error("Files undefined.");
+		}
+
 		// TODO: Create the folder here in storage
+		// TODO: Also verify that this matches the new id (might need to create the new ID first)
 		const rootFilepath = "/TEST/ROOT/FILEPATH";
+		for (const file in req.files) {
+			// TODO: Create each file on the server
+			// TODO: Call addUnityProjectFile to add the database entry of the file's existence
+		}
 
 		let unityApp: UnityApp | null = null;
 

@@ -80,7 +80,7 @@ export interface CreateUnityAppPayload {
 	allowFullscreen: boolean;
 	allowReloading: boolean;
 
-	files: Array<CreateUnityProjectFilePayload>;
+	files: File[];
 
 	// Analytic options
 	showFPS: boolean;
@@ -99,11 +99,11 @@ export function isCreateUnityAppPayload(
 		["embedHeight", "number", false]
 	] as const;
 
-	if (!body.files || !Array.isArray(body.files)) {
-		console.debug("files is not a valid array.");
+	if (!body.files) {
 		return false;
 	}
 
+	/*
 	for (const file of body.files) {
 		if (!isCreateUnityProjectFilePayload(file)) {
 			console.debug(
@@ -113,6 +113,7 @@ export function isCreateUnityAppPayload(
 			return false;
 		}
 	}
+	*/
 
 	return checkPayload(body, keys);
 }
