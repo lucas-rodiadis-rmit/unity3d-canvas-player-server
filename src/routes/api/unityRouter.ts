@@ -75,7 +75,7 @@ router.post(
 			throw Error("Unable to create Unity app.");
 		}
 
-		res.status(201).send(unityApp);
+		res.status(201).send(unityAppConfigFrom(unityApp));
 	}
 );
 

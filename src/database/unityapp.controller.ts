@@ -52,16 +52,6 @@ function getUnityApp(project_id: string): UnityApp | null {
 		throw Error(files.message);
 	}
 
-	console.log({
-		id: project_id,
-		name: project.data.name,
-
-		uploaded: project.data.uploaded,
-
-		owner: instructor.data,
-		files: files.data
-	});
-
 	return {
 		id: project_id,
 		name: project.data.name,
@@ -100,9 +90,12 @@ function createUnityApp(
 		}
 	}
 
-	return unityappController.getUnityApp(
+	const newApp = unityappController.getUnityApp(
 		result.data.project_id
 	);
+
+	console.debug("Created new app: ", newApp);
+	return newApp;
 }
 
 export default {
