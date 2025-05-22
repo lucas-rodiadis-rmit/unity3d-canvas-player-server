@@ -1,4 +1,9 @@
-import { UnityApp } from "../unity";
+import { CreateUnityAppPayload } from "../types";
+import {
+	CreateUnityProjectFilePayload,
+	UnityApp
+} from "../unity";
+import unityappController from "./unityapp.controller";
 import unityappRepository from "./unityapp.repository";
 
 import userRepo from "./user.repository";
@@ -6,10 +11,7 @@ import userRepo from "./user.repository";
 function addUnityProjectFile(
 	// ID of the project the file is being added to
 	project_id: string,
-	// The relative filepath of the file  (eg. Build/buildweb.loader.js)
-	relativeFilepath: string,
-	// The size of the file as an unsigned integer  (eg. 4096 <= 4kb)
-	filesize: number
+	props: CreateUnityProjectFilePayload
 ): boolean {
 	const unityProject =
 		unityappRepository.getUnityProject(project_id);
@@ -21,8 +23,8 @@ function addUnityProjectFile(
 	return (
 		unityappRepository.addFileToProject(
 			unityProject.data.project_id,
-			relativeFilepath,
-			filesize,
+			props.filepath,
+			props.filesize,
 			true // Allow Upsert
 		).status === "SUCCESS"
 	);
@@ -71,7 +73,40 @@ function getUnityApp(project_id: string): UnityApp | null {
 	};
 }
 
+function createUnityApp(
+	userId: string, // Instructor
+	rootFilepath: string,
+	payload: CreateUnityAppPayload,
+	projectId?: string
+): UnityApp | null {
+	let result = unityappRepository.addUnityProject(
+		userId,
+		payload.name,
+		rootFilepath,
+		false, // Disallow upsert
+		projectId
+	);
+
+	if (result.status !== "SUCCESS") return null;
+
+	for (const file of payload.files) {
+		if (
+			!unityappController.addUnityProjectFile(
+				result.data.project_id,
+				file
+			)
+		) {
+			return null;
+		}
+	}
+
+	return unityappController.getUnityApp(
+		result.data.project_id
+	);
+}
+
 export default {
+	createUnityApp,
 	addUnityProjectFile,
 	getUnityApp
 };

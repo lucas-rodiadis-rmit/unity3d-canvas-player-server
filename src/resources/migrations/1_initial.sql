@@ -7,12 +7,13 @@ CREATE TABLE instructor (
 
 CREATE TABLE unity_project (
     project_id TEXT,
-    name TEXT NOT NULL,
+
+    name TEXT NOT NULL UNIQUE,
+    root_filepath TEXT NOT NULL UNIQUE,
 
     user_id TEXT NOT NULL,
 
     uploaded INTEGER NOT NULL, -- Date	
-    root_filepath TEXT NOT NULL UNIQUE,
     PRIMARY KEY (project_id),
     FOREIGN KEY (user_id) REFERENCES instructor (user_id)
 ) WITHOUT ROWID;

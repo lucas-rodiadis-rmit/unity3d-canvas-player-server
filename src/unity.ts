@@ -16,6 +16,11 @@ export interface UnityApp {
 	files: UnityProjectFile[];
 }
 
+export type CreateUnityProjectFilePayload = Omit<
+	UnityProjectFile,
+	"project_id" | "uploaded"
+>;
+
 export interface UnityProjectFile {
 	project_id: string;
 	filepath: string; // Relative filepath to root
