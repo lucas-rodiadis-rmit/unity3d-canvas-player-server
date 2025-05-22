@@ -185,3 +185,10 @@ export interface DBInternalUnityProject {
 	uploaded: number;
 	root_filepath: string;
 }
+
+export interface DBInternalUnityProjectFile {
+	project_id: string;
+	relative_filepath: string;
+	filesize: number;
+	uploaded: number;
+}

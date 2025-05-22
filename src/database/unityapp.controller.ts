@@ -7,11 +7,25 @@ function addUnityProjectFile(
 	// ID of the project the file is being added to
 	project_id: string,
 	// The relative filepath of the file  (eg. Build/buildweb.loader.js)
-	filepath: string,
+	relativeFilepath: string,
 	// The size of the file as an unsigned integer  (eg. 4096 <= 4kb)
 	filesize: number
-): void {
-	// TODO: Implement
+): boolean {
+	const unityProject =
+		unityappRepository.getUnityProject(project_id);
+
+	if (unityProject.status !== "SUCCESS") {
+		return false;
+	}
+
+	return (
+		unityappRepository.addFileToProject(
+			unityProject.data.project_id,
+			relativeFilepath,
+			filesize,
+			true // Allow Upsert
+		).status === "SUCCESS"
+	);
 }
 
 function getUnityApp(project_id: string): UnityApp | null {
@@ -35,6 +49,16 @@ function getUnityApp(project_id: string): UnityApp | null {
 	if (files.status === "ERROR") {
 		throw Error(files.message);
 	}
+
+	console.log({
+		id: project_id,
+		name: project.data.name,
+
+		uploaded: project.data.uploaded,
+
+		owner: instructor.data,
+		files: files.data
+	});
 
 	return {
 		id: project_id,

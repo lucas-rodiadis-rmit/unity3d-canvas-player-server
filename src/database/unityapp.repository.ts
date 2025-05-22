@@ -3,6 +3,7 @@ import { UnityProject, UnityProjectFile } from "../unity";
 import {
 	DB,
 	DBInternalUnityProject,
+	DBInternalUnityProjectFile,
 	UNITY_PROJECT_FILE_TABLE,
 	UNITY_PROJECT_TABLE
 } from "./internals";
@@ -64,7 +65,7 @@ export function addUnityProject(
 	const unityProject = stmt.get({
 		user_id: userId,
 		name: name,
-		uploaded: new Date().getUTCMilliseconds(),
+		uploaded: Date.now(),
 		project_id: project_id,
 		root_filepath: rootFilepath
 	});
@@ -82,6 +83,50 @@ export function addUnityProject(
 			name: unityProject.name,
 			user_id: unityProject.user_id,
 			root_filepath: unityProject.root_filepath,
+			uploaded: new Date(unityProject.uploaded)
+		}
+	};
+}
+
+export function addFileToProject(
+	project_id: string,
+	relativeFilepath: string,
+	filesize: number,
+	allowUpsert?: boolean
+): DBCreateResult<UnityProjectFile> {
+	const stmt = DB.prepare<
+		DBInternalUnityProjectFile,
+		DBInternalUnityProjectFile
+	>(
+		`INSERT INTO ${UNITY_PROJECT_FILE_TABLE} (project_id, relative_filepath, filesize, uploaded)
+			VALUES (@project_id, @relative_filepath, @filesize, @uploaded)
+			${allowUpsert ? "ON CONFLICT(project_id, relative_filepath) DO UPDATE SET filesize = excluded.filesize, uploaded = excluded.uploaded" : ""}
+		RETURNING *`
+	);
+
+	if (!project_id) {
+		project_id = uuid4();
+	}
+
+	const unityProject = stmt.get({
+		project_id: project_id,
+		relative_filepath: relativeFilepath,
+		filesize: filesize,
+		uploaded: Date.now()
+	});
+
+	if (!unityProject)
+		return {
+			status: "ERROR",
+			message: "Unknown error."
+		};
+
+	return {
+		status: "SUCCESS",
+		data: {
+			project_id: unityProject.project_id,
+			filesize: unityProject.filesize,
+			filepath: unityProject.relative_filepath,
 			uploaded: new Date(unityProject.uploaded)
 		}
 	};
@@ -121,5 +166,6 @@ function getFilesForProject(
 export default {
 	getUnityProject,
 	addUnityProject,
-	getFilesForProject
+	getFilesForProject,
+	addFileToProject
 };

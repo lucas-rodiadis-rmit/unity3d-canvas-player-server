@@ -56,6 +56,41 @@ function seed(): boolean {
 		}
 	}
 
+	const seedFiles = [
+		"Build/buildweb.data.gz",
+		"Build/buildweb.framework.js.gz",
+		"Build/buildweb.loader.js",
+		"Build/buildweb.wasm.gz",
+		"index.html",
+		"StreamingAssets/UnityServicesProjectConfiguration.json",
+		"TemplateData/favicon.ico",
+		"TemplateData/fullscreen-button.png",
+		"TemplateData/progress-bar-empty-dark.png",
+		"TemplateData/progress-bar-empty-light.png",
+		"TemplateData/progress-bar-full-dark.png",
+		"TemplateData/progress-bar-full-light.png",
+		"TemplateData/style.css",
+		"TemplateData/unity-logo-dark.png",
+		"TemplateData/unity-logo-light.png",
+		"TemplateData/webgl-logo.png"
+	];
+
+	for (const seedFile of seedFiles) {
+		console.log(`Inserting seed file ${seedFile}`);
+
+		const result = unityappRepository.addFileToProject(
+			"test123456",
+			seedFile,
+			2048, // 2kb
+			true // Allow upsert
+		);
+
+		if (result.status !== "SUCCESS") {
+			console.error("Error inserting the instructor");
+			return false;
+		}
+	}
+
 	console.log("Successfully inserted all seed data.");
 
 	return true;

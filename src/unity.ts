@@ -18,7 +18,7 @@ export interface UnityApp {
 
 export interface UnityProjectFile {
 	project_id: string;
-	filepath: "";
+	filepath: string; // Relative filepath to root
 	filesize: number;
 	uploaded: Date;
 }
