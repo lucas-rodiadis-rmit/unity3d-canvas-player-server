@@ -3,6 +3,7 @@ import { Instructor } from "./types";
 
 export interface UnityAppConfig {
 	id: string;
+	name: string;
 
 	buildUrl: string;
 }
@@ -37,19 +38,11 @@ export function unityAppConfigFrom(
 ): UnityAppConfig | null {
 	if (app === null) return null;
 
-	// TODO: Implement extracting the app config from the project in the database
-	if (app.id === "test123456") {
-		const clinicSimPath =
+	return {
+		id: app.id,
+		name: app.name,
+		buildUrl:
 			appConfig.domainUrl +
-			"/data/project/test123456/Build";
-
-		const clinicSim: UnityAppConfig = {
-			id: "test123456",
-			buildUrl: clinicSimPath
-		};
-
-		return clinicSim;
-	}
-
-	return null;
+			`/data/project/${app.id}/Build`
+	};
 }
