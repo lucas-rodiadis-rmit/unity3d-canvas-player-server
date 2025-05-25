@@ -62,7 +62,6 @@ function getAllUnityProjects(): DBGetManyResult<UnityProject> {
 export function addUnityProject(
 	userId: string,
 	name: string,
-	rootFilepath: string,
 	allowUpsert?: boolean,
 	project_id?: string
 ): DBCreateResult<UnityProject> {
@@ -85,7 +84,7 @@ export function addUnityProject(
 		name: name,
 		uploaded: Date.now(),
 		project_id: project_id,
-		root_filepath: rootFilepath
+		root_filepath: `${project_id}/`
 	});
 
 	if (!unityProject)

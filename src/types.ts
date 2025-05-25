@@ -1,3 +1,4 @@
+import { CreateUnityAppPayload } from "./shared/types";
 import { UnityProject, UnityProjectFile } from "./unity";
 
 export type UserType = "INSTRUCTOR" | "STUDENT";
@@ -24,11 +25,15 @@ function checkPayload(
 		typeof obj !== "object" ||
 		obj === undefined ||
 		obj === null
-	)
+	) {
+		console.debug(
+			`Expected a valid object in payload check. Received ${typeof obj} instead.`
+		);
 		return false;
+	}
 
 	for (const [key, type, required] of members) {
-		if (!(key in obj)) {
+		if (required && !(key in obj)) {
 			console.debug(
 				`Missing key "${key}" required in ${members.map((k) => k[0])}`
 			);
@@ -68,24 +73,6 @@ export function isCreateUnityProjectFilePayload(
 	return checkPayload(obj, keys);
 }
 
-export interface CreateUnityAppPayload {
-	name: string;
-
-	// Extents options
-	embedWidth?: number;
-	embedHeight?: number;
-
-	// Control options
-	allowResizing: boolean;
-	allowFullscreen: boolean;
-	allowReloading: boolean;
-
-	files: File[];
-
-	// Analytic options
-	showFPS: boolean;
-}
-
 export function isCreateUnityAppPayload(
 	body: any
 ): body is CreateUnityAppPayload {
@@ -98,10 +85,6 @@ export function isCreateUnityAppPayload(
 		["embedWidth", "number", false],
 		["embedHeight", "number", false]
 	] as const;
-
-	if (!body.files) {
-		return false;
-	}
 
 	/*
 	for (const file of body.files) {

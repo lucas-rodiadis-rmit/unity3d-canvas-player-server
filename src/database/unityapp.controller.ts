@@ -1,7 +1,5 @@
-import {
-	CreateUnityAppPayload,
-	CreateUnityProjectFilePayload
-} from "../types";
+import { CreateUnityAppPayload } from "../shared/types";
+import { CreateUnityProjectFilePayload } from "../types";
 import { UnityApp } from "../unity";
 import unityappController from "./unityapp.controller";
 import unityappRepository from "./unityapp.repository";
@@ -101,20 +99,20 @@ function getAllUnityApps(): UnityApp[] {
 
 function createUnityApp(
 	userId: string, // Instructor
-	rootFilepath: string,
 	payload: CreateUnityAppPayload,
 	projectId?: string
 ): UnityApp | null {
 	let result = unityappRepository.addUnityProject(
 		userId,
 		payload.name,
-		rootFilepath,
 		false, // Disallow upsert
 		projectId
 	);
 
 	if (result.status !== "SUCCESS") return null;
 
+	// TODO: Use this
+	/*
 	for (const file of payload.files) {
 		if (
 			!unityappController.addUnityProjectFile(
@@ -128,6 +126,7 @@ function createUnityApp(
 			return null;
 		}
 	}
+	*/
 
 	const newApp = unityappController.getUnityApp(
 		result.data.project_id

@@ -29,12 +29,7 @@ function seed(): boolean {
 	}
 
 	const seedProjects = [
-		[
-			"test_instructor_1",
-			"ClinicSim",
-			"/test123456",
-			"test123456"
-		]
+		["test_instructor_1", "ClinicSim", "test123456"]
 	];
 
 	for (const project of seedProjects) {
@@ -45,9 +40,8 @@ function seed(): boolean {
 		const result = unityappRepository.addUnityProject(
 			project[0],
 			project[1],
-			project[2],
 			true,
-			project[3]
+			project[2]
 		);
 
 		if (result.status !== "SUCCESS") {

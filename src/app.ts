@@ -17,6 +17,9 @@ if (!initDatabase(true, true)) {
 
 const app = express();
 
+// For parsing JSON from frontend
+app.use(express.json());
+
 if (true) {
 	app.use(cors());
 }
