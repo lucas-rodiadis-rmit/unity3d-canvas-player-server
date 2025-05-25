@@ -70,7 +70,8 @@ function createReturnEmbed(
 	payload: CreateEmbedPayload
 ): LTIEmbedRequestMessage {
 	const embedUrl: string =
-		appConfig.domainUrl + "/unity-player/test123456";
+		appConfig.domainUrl +
+		`/unity-player/${payload.project_id}`;
 
 	const graph: LTIContentItem = {
 		"@type": "LtiLinkItem",
