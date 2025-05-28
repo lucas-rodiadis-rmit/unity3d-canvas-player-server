@@ -1,12 +1,7 @@
 import appConfig from "./appConfig";
+
+import { UnityAppConfig } from "./shared/types";
 import { Instructor } from "./types";
-
-export interface UnityAppConfig {
-	id: string;
-	name: string;
-
-	buildUrl: string;
-}
 
 export interface UnityApp {
 	id: string;

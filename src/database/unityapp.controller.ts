@@ -42,7 +42,12 @@ function getUnityApp(project_id: string): UnityApp | null {
 		project.data.user_id
 	);
 
-	if (instructor.status !== "SUCCESS") return null;
+	if (instructor.status !== "SUCCESS") {
+		console.debug(
+			`Can't get Unity app ${project_id} because no instructor count be found from the user_id.`
+		);
+		return null;
+	}
 
 	const files =
 		unityappRepository.getFilesForProject(project_id);

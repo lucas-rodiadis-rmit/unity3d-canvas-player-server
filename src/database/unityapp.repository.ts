@@ -26,7 +26,12 @@ function getUnityProject(
 		`SELECT * FROM ${UNITY_PROJECT_TABLE} p WHERE p.project_id = ?`
 	).get(project_id);
 
-	if (!project) return { status: "FAILURE" };
+	if (!project) {
+		console.debug(
+			`Get project by ID failed in SQL for project_id ${project_id}`
+		);
+		return { status: "FAILURE" };
+	}
 
 	return {
 		status: "SUCCESS",

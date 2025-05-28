@@ -95,6 +95,96 @@ router.post("/", function (req: Request, res: Response) {
 });
 
 router.post(
+	"/:id/upload",
+	receiver.single("chunk"),
+	function (req: Request, res: Response) {
+		// TODO: Make this fetch the users token so we can say they uploaded the project
+		const projectId = req.params.id;
+
+		const unityProject =
+			unityappRepository.getUnityProject(projectId);
+
+		if (unityProject.status !== "SUCCESS") {
+			res.status(404).send(
+				`No app available for project ID ${projectId}`
+			);
+			return;
+		}
+
+		const projectDir = path.join(
+			appConfig.unityProjectsDir,
+			unityProject.data.root_filepath
+		);
+
+		if (!fs.existsSync(projectDir)) {
+			fs.mkdirSync(projectDir);
+		}
+
+		// Removes up to the first folder
+		const chopFilename = (filename: string) =>
+			filename.substring(filename.indexOf("/"));
+
+		if (!req.file) {
+			res.send(403).send(
+				"key 'chunk' missing in request."
+			);
+			return;
+		}
+
+		if (!req.body.offset) {
+			res.send(403).send(
+				"key 'offset' missing in request."
+			);
+			return;
+		}
+		const offset = Number(req.body.offset);
+
+		if (!req.body.path) {
+			res.send(403).send(
+				"key 'path' missing in request."
+			);
+			return;
+		}
+
+		const filepath = path.join(
+			projectDir,
+			chopFilename(req.body.path)
+		);
+
+		console.log(`Creating ${filepath}.`);
+
+		fs.mkdirSync(path.dirname(filepath), {
+			recursive: true
+		});
+
+		const openFile = fs.openSync(filepath, "w+");
+
+		fs.writeSync(
+			openFile,
+			req.file.buffer,
+			0,
+			req.file.buffer.length,
+			offset
+		);
+		fs.closeSync(openFile);
+
+		console.log(`Writing ${filepath} to database.`);
+
+		unityappController.addUnityProjectFile(projectId, {
+			filepath,
+			filesize: req.file.size
+		});
+
+		res.status(201).send(
+			unityAppConfigFrom(
+				unityappController.getUnityApp(projectId)
+			)
+		);
+	}
+);
+
+/*
+router.post(
 	"/upload",
 	receiver.array("files"),
 	function (req: Request, res: Response) {
@@ -175,5 +265,6 @@ router.post(
 		);
 	}
 );
+*/
 
 export default router;
