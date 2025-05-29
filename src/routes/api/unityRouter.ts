@@ -157,7 +157,10 @@ router.post(
 			recursive: true
 		});
 
-		const openFile = fs.openSync(filepath, "w+");
+		const openFile = fs.openSync(
+			filepath,
+			fs.existsSync(filepath) ? "r+" : "w+"
+		);
 
 		fs.writeSync(
 			openFile,
