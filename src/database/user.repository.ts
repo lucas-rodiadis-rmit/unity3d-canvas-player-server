@@ -39,7 +39,12 @@ function addInstructor(
 	);
 
 	const instructor = stmt.get({ userId, email });
-	if (!instructor) return { status: "FAILURE" };
+	if (!instructor) {
+		console.error(
+			"Unable to create instructor at a database level."
+		);
+		return { status: "FAILURE" };
+	}
 
 	return {
 		status: "SUCCESS",

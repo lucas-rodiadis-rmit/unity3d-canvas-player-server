@@ -3,16 +3,18 @@ import { Request, Response, Router } from "express";
 import { loadResource } from "../constants";
 
 import appConfig from "../appConfig";
-import { setReturnUrl } from "./api/embedRouter";
 
 const router = Router();
 
 interface ReactAppData {
 	returnUrl?: string;
-	token?: string;
+	newToken?: string;
 }
 
-function returnReactApp(res: Response, data?: ReactAppData): void {
+function returnReactApp(
+	res: Response,
+	data?: ReactAppData
+): void {
 	let reactEntryPoint: string | null = loadResource(
 		"frontend/index.html"
 	);
@@ -39,22 +41,14 @@ function returnReactApp(res: Response, data?: ReactAppData): void {
 router.post(
 	"/embed",
 	function (req: Request, res: Response) {
-		const returnUrl: string =
-			req.body?.ext_content_return_url;
-
-		if (!returnUrl) {
-			console.warn(
-				"No ext_content_return_url found in request body."
-			);
-			res.status(400).send("Missing return URL");
-			return;
-		}
-
-		// TODO: Replace this with a real database call
-		setReturnUrl(returnUrl);
+		// // TODO: Replace this with a real database call
+		// setReturnUrl(returnUrl);
 
 		// TODO: Make this input the return url into cache and generate a token
-		returnReactApp(res, { returnUrl: returnUrl, token: "test_token" });
+		returnReactApp(res, {
+			returnUrl: req.session.user?.returnUrl,
+			newToken: "test_token"
+		});
 	}
 );
 
@@ -62,20 +56,8 @@ router.post(
 router.get(
 	"/embed",
 	function (req: Request, res: Response) {
-		const returnUrl: string = `TEST_RETURN_URL-${new Date().toISOString()}`;
-		if (!returnUrl) {
-			console.warn(
-				"No ext_content_return_url found in request body."
-			);
-			res.status(400).send("Missing return URL");
-			return;
-		}
-
-		// TODO: Replace this with a real database call
-		setReturnUrl(returnUrl);
-
 		// TODO: Make this input the return url into cache and generate a token
-		returnReactApp(res, { token: "test_token" });
+		returnReactApp(res, { newToken: "test_token" });
 	}
 );
 

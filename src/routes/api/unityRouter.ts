@@ -50,13 +50,14 @@ router.get("/", function (req: Request, res: Response) {
 
 router.post("/", function (req: Request, res: Response) {
 	// TODO: Make this fetch the users token so we can say they uploaded the project
-	const token = "test_instructor_1";
+	const token = req.session.user?.canvasUserId;
+	if (!token) throw Error("No user cookie present.");
 
 	let instructor = userController.getInstructor(token);
 
 	// If the requested instructor doesn't exist in the database
 	if (instructor === null) {
-		instructor = userController.addInstructor(
+		instructor = userController.createInstructor(
 			token,
 			// TODO: Double check this is actually fetching the email from the canvas body
 			req.body.email
@@ -101,12 +102,27 @@ router.post(
 		// TODO: Make this fetch the users token so we can say they uploaded the project
 		const projectId = req.params.id;
 
+		const canvasUserId = req.session.user?.canvasUserId;
+
+		if (!canvasUserId) {
+			throw Error(
+				"User accessed unauthorised route /id/upload"
+			);
+		}
+
 		const unityProject =
 			unityappRepository.getUnityProject(projectId);
 
 		if (unityProject.status !== "SUCCESS") {
 			res.status(404).send(
 				`No app available for project ID ${projectId}`
+			);
+			return;
+		}
+
+		if (unityProject.data.user_id !== canvasUserId) {
+			res.status(403).send(
+				"You do not own this Unity project, and are unable to update it."
 			);
 			return;
 		}

@@ -8,7 +8,7 @@ function getInstructor(userId: string): Instructor | null {
 	return instructor.data;
 }
 
-function addInstructor(
+function createInstructor(
 	userId: string,
 	email?: string
 ): Instructor | null {
@@ -24,5 +24,5 @@ function addInstructor(
 
 export default {
 	getInstructor,
-	addInstructor
+	createInstructor
 };

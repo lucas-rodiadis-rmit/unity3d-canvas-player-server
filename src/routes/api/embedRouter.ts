@@ -52,7 +52,12 @@ router.post(
 		const embedRequest = createReturnEmbed(req.body);
 
 		// Get return URL where the embed should be sent
-		const returnUrl = getReturnUrl();
+		const returnUrl = req.session.user?.returnUrl;
+		if (!returnUrl) {
+			throw Error(
+				"No return URL on authenticated user."
+			);
+		}
 
 		// Send the embed request to the return URL (likely a learning platform)
 		const result = await axios.post(

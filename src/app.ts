@@ -8,6 +8,9 @@ import { initialiseRoutes } from "./routes";
 
 import { initDatabase } from "./database";
 
+import session from "express-session";
+import appConfig from "./appConfig";
+
 if (!initDatabase(true, true)) {
 	console.error(
 		"\nUnable to initialise the database. Exiting now."
@@ -23,6 +26,40 @@ app.use(express.json());
 if (true) {
 	app.use(cors());
 }
+
+// Define the format of the "Session Data"
+declare module "express-session" {
+	interface SessionData {
+		user?: {
+			canvasUserId: string;
+			launchId: string;
+			isInstructor: boolean;
+			returnUrl: string;
+			// roles: string[];  Could store a list of all roles for the user in the future
+		};
+	}
+}
+
+const sessionProps: session.SessionOptions = {
+	name: "canvasunityplayer.sid",
+	secret: "SESSION_SECRET",
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		httpOnly: true,
+		secure: false,
+		sameSite: "lax",
+		maxAge: 1000 * 60 * 60 // 1 hour
+	}
+};
+
+// App is running behind nginx, need trust proxy
+if (appConfig.nodeEnv !== "development") {
+	sessionProps.cookie!.secure = true;
+	app.set("trust proxy", 1);
+}
+
+app.use(session(sessionProps));
 
 // app.use(express.json());
 initialiseRoutes(app);

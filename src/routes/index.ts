@@ -6,15 +6,15 @@ import {
 	urlencoded
 } from "express";
 
-import {
-	canvasAuthHandler,
-	gzipHandler
-} from "../middlewares";
+import { gzipHandler } from "../middlewares";
 
 import morgan from "morgan";
 
 import { resourcePath } from "../constants";
 
+import appConfig from "../appConfig";
+import requiresCanvasUser from "../auth/requiresCanvasUser";
+import requiresCanvasUserDev from "../auth/requiresCanvasUserDev";
 import apiRouter from "./api";
 import baseRouter from "./baseRouter";
 import dataRouter from "./dataRouter";
@@ -32,7 +32,11 @@ router.use(gzipHandler);
 router.use("", baseRouter);
 
 // ALL ROUTES BELOW HERE ARE REQUIRED TO BE AUTHENTICATED
-router.use(canvasAuthHandler);
+if (appConfig.nodeEnv === "development") {
+	router.use(requiresCanvasUserDev);
+} else {
+	router.use(requiresCanvasUser);
+}
 
 router.use("/data", dataRouter);
 //
@@ -42,7 +46,6 @@ router.use("/data", dataRouter);
 // 		res.status(403).send("Forbidden");
 // 	}
 // );
-//
 
 // Define endpoints using modularised routers
 router.use("", unityRouter);
