@@ -4,7 +4,11 @@ import {
 	userController
 } from "../../database";
 import { isCreateUnityAppPayload } from "../../shared/types/validation";
-import { UnityApp, unityAppConfigFrom } from "../../unity";
+import {
+	partialUnityAppConfigFrom,
+	UnityApp,
+	unityAppConfigFrom
+} from "../../unity";
 
 import multer from "multer";
 import unityappRepository from "../../database/unityapp.repository";
@@ -40,11 +44,13 @@ router.get("/:id", function (req: Request, res: Response) {
 
 router.get("/", function (req: Request, res: Response) {
 	const apps = unityappController.getAllUnityApps();
+	console.log(`Returning ${apps.length} apps`);
 
 	const configs = apps
 		.map((app) => unityAppConfigFrom(app))
 		.filter((config) => config !== null);
 
+	console.log(configs);
 	res.send(configs);
 });
 
@@ -92,7 +98,9 @@ router.post("/", function (req: Request, res: Response) {
 		throw Error("Unable to create Unity app.");
 	}
 
-	res.status(201).send(unityAppConfigFrom(unityApp));
+	res.status(201).send(
+		partialUnityAppConfigFrom(unityApp)
+	);
 });
 
 router.post(
@@ -162,20 +170,21 @@ router.post(
 			return;
 		}
 
-		const filepath = path.join(
+		const filepath = chopFilename(req.body.path);
+		const fullFilepath = path.join(
 			projectDir,
-			chopFilename(req.body.path)
+			filepath
 		);
 
-		console.log(`Creating ${filepath}.`);
+		console.log(`Creating ${fullFilepath}.`);
 
-		fs.mkdirSync(path.dirname(filepath), {
+		fs.mkdirSync(path.dirname(fullFilepath), {
 			recursive: true
 		});
 
 		const openFile = fs.openSync(
-			filepath,
-			fs.existsSync(filepath) ? "r+" : "w+"
+			fullFilepath,
+			fs.existsSync(fullFilepath) ? "r+" : "w+"
 		);
 
 		fs.writeSync(
@@ -190,15 +199,13 @@ router.post(
 		console.log(`Writing ${filepath} to database.`);
 
 		unityappController.addUnityProjectFile(projectId, {
-			filepath,
+			filepath: filepath,
 			filesize: req.file.size
 		});
 
-		res.status(201).send(
-			unityAppConfigFrom(
-				unityappController.getUnityApp(projectId)
-			)
-		);
+		res.status(201).send({
+			message: "Successful upload."
+		});
 	}
 );
 

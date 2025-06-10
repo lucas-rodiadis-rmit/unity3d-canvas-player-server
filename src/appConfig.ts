@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fs from "fs";
 import Path from "path";
 
 dotenv.config();
@@ -25,6 +26,10 @@ const config: Config = {
 	),
 	resourcesDir: Path.join(__dirname, "resources")
 } as const;
+
+if (!fs.existsSync(config.unityProjectsDir)) {
+	fs.mkdirSync(config.unityProjectsDir);
+}
 
 if (config.domainUrl === "undefined") {
 	throw new Error(

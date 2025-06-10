@@ -30,11 +30,14 @@ export interface UnityInstanceOptions {
 	matchWebGLToCanvasSize: false;
 }
 
-// Based on server config
-export interface UnityAppConfig {
+export interface PartialUnityAppConfig {
 	id: string;
 	name: string;
+}
 
+// Based on server config
+export interface UnityAppConfig
+	extends PartialUnityAppConfig {
 	playerOptions: UnityPlayerOptions;
 	instanceOptions: UnityInstanceOptions;
 }

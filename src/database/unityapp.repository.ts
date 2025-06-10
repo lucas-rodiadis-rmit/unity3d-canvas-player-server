@@ -30,10 +30,14 @@ function deserialiseUnityProject(
 		playerOptions: {
 			embedWidth: project.embed_width,
 			embedHeight: project.embed_height,
-			allowResizing: project.allow_resizing,
-			allowReloading: project.allow_reloading,
-			allowFullscreen: project.allow_fullscreen,
-			showFPS: project.fps_counter
+			allowResizing: Boolean(project.allow_resizing),
+			allowReloading: Boolean(
+				project.allow_reloading
+			),
+			allowFullscreen: Boolean(
+				project.allow_fullscreen
+			),
+			showFPS: Boolean(project.fps_counter)
 		}
 	};
 }
@@ -103,10 +107,14 @@ export function addUnityProject(
 		embed_width: playerOptions.embedWidth,
 		embed_height: playerOptions.embedHeight,
 
-		allow_resizing: playerOptions.allowResizing,
-		allow_fullscreen: playerOptions.allowFullscreen,
-		allow_reloading: playerOptions.allowReloading,
-		fps_counter: playerOptions.showFPS
+		allow_resizing: playerOptions.allowResizing ? 1 : 0,
+		allow_fullscreen: playerOptions.allowFullscreen
+			? 1
+			: 0,
+		allow_reloading: playerOptions.allowReloading
+			? 1
+			: 0,
+		fps_counter: playerOptions.showFPS ? 1 : 0
 	});
 
 	if (!unityProject)

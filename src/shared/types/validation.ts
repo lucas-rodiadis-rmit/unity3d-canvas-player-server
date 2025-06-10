@@ -47,8 +47,13 @@ export function checkPayload(
 export function isCreateUnityAppPayload(
 	body: any
 ): body is CreateUnityAppPayload {
-	const keys: Array<[string, string, boolean]> = [
-		["name", "string", true],
+	const mainKeys: Array<[string, string, boolean]> = [
+		["name", "string", true]
+	] as const;
+
+	if (!("playerOptions" in body)) return false;
+
+	const playerKeys: Array<[string, string, boolean]> = [
 		["allowResizing", "boolean", true],
 		["allowFullscreen", "boolean", true],
 		["allowReloading", "boolean", true],
@@ -57,19 +62,12 @@ export function isCreateUnityAppPayload(
 		["embedHeight", "number", false]
 	] as const;
 
-	/*
-    for (const file of body.files) {
-        if (!isCreateUnityProjectFilePayload(file)) {
-            console.debug(
-                "Invalid CreateUnityProjectFilePayload found: ",
-                file
-            );
-            return false;
-        }
-    }
-    */
-	return checkPayload(body, keys);
+	return (
+		checkPayload(body, mainKeys) &&
+		checkPayload(body.playerOptions, playerKeys)
+	);
 }
+
 export function isCreateUnityProjectFilePayload(
 	obj: any
 ): obj is CreateUnityProjectFilePayload {

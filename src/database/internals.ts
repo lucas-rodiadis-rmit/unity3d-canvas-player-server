@@ -188,11 +188,11 @@ export interface DBInternalUnityProject {
 	embed_width?: number;
 	embed_height?: number;
 
-	allow_resizing: boolean;
-	allow_fullscreen: boolean;
-	allow_reloading: boolean;
+	allow_resizing: number; // Boolean
+	allow_fullscreen: number; // Boolean
+	allow_reloading: number; // Boolean
 
-	fps_counter: boolean;
+	fps_counter: number; // Boolean
 }
 
 export interface DBInternalUnityProjectFile {

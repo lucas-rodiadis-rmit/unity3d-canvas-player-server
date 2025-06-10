@@ -3,7 +3,9 @@ import { unityappController } from "./database";
 import unityappRepository from "./database/unityapp.repository";
 
 import {
+	PartialUnityAppConfig,
 	UnityAppConfig,
+	UnityInstanceOptions,
 	UnityPlayerOptions
 } from "./shared/types/types";
 import { Instructor } from "./types";
@@ -35,29 +37,93 @@ export interface UnityProject {
 	playerOptions: UnityPlayerOptions;
 }
 
+export function partialUnityAppConfigFrom(
+	app: UnityApp | null
+): PartialUnityAppConfig | null {
+	if (!app) return null;
+
+	return { id: app.id, name: app.name };
+}
+
 export function unityAppConfigFrom(
 	app: UnityApp | null
 ): UnityAppConfig | null {
-	if (app === null) return null;
-	const buildUrl =
-		appConfig.domainUrl +
-		`/data/project/${app.id}/Build`;
+	if (app === null) {
+		console.error(
+			"Attempted to get app config for empty app."
+		);
+		return null;
+	}
+	const baseUrl =
+		appConfig.domainUrl + `/data/project/${app.id}/`;
+	const buildUrl = baseUrl + `Build`;
 
 	const playerOptions: UnityPlayerOptions | null =
 		unityappController.getProjectPlayerOptions(app.id);
 	if (playerOptions === null) {
-		throw Error(
+		console.log(
 			`Player options is null for non null app ${app.id}.`
 		);
+		return null;
 	}
 
 	const files = unityappRepository.getFilesForProject(
 		app.id
 	);
 	if (files.status !== "SUCCESS") {
-		throw Error(
+		console.log(
 			`Unable to get files for project ${app.id}`
 		);
+
+		return null;
+	}
+
+	const instanceOptions: UnityInstanceOptions = {
+		buildUrl,
+		loaderUrl: "",
+		dataUrl: "",
+		frameworkUrl: "",
+		codeUrl: "",
+		streamingAssetsUrl: "",
+		companyName: "",
+		productName: "",
+		productVersion: "",
+		matchWebGLToCanvasSize: false
+	};
+
+	// Keyname, regex match
+	const checks: Array<
+		[keyof UnityInstanceOptions, RegExp]
+	> = [
+		["loaderUrl", /.*\.loader.js(.gz)?/],
+		["dataUrl", /.*\.data(.gz)?/],
+		["frameworkUrl", /.*\.framework.js(.gz)?/],
+		["codeUrl", /.*\.wasm(.gz)?/]
+	];
+
+	for (const file of files.data) {
+		for (const [key, regex] of checks) {
+			// If the filepath matches the regex
+			if (regex.test(file.filepath)) {
+				// Update instanceOptions
+				Object.assign(instanceOptions, {
+					[key]: baseUrl + file.filepath
+				});
+				break;
+			}
+		}
+	}
+
+	// If any fields are missing, return null
+	if (
+		!checks.every(
+			([key, _]) => instanceOptions[key] !== ""
+		)
+	) {
+		console.log(
+			`Not all instance options exist for app ${app.id}`
+		);
+		return null;
 	}
 
 	const config: UnityAppConfig = {
@@ -65,18 +131,7 @@ export function unityAppConfigFrom(
 		name: app.name,
 
 		playerOptions,
-		instanceOptions: {
-			buildUrl: buildUrl,
-			dataUrl: buildUrl + "/buildweb.data.gz",
-			frameworkUrl:
-				buildUrl + "/buildweb.framework.js.gz",
-			codeUrl: buildUrl + "/buildweb.wasm.gz",
-			streamingAssetsUrl: "StreamingAssets",
-			companyName: "RMIT",
-			productName: "Nursing XR",
-			productVersion: "1",
-			matchWebGLToCanvasSize: false
-		}
+		instanceOptions
 	};
 
 	return config;
