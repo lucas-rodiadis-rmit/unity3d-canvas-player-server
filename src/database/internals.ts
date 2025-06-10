@@ -184,6 +184,15 @@ export interface DBInternalUnityProject {
 
 	uploaded: number;
 	root_filepath: string;
+
+	embed_width?: number;
+	embed_height?: number;
+
+	allow_resizing: boolean;
+	allow_fullscreen: boolean;
+	allow_reloading: boolean;
+
+	fps_counter: boolean;
 }
 
 export interface DBInternalUnityProjectFile {

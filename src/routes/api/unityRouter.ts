@@ -3,7 +3,7 @@ import {
 	unityappController,
 	userController
 } from "../../database";
-import { isCreateUnityAppPayload } from "../../types";
+import { isCreateUnityAppPayload } from "../../shared/types/validation";
 import { UnityApp, unityAppConfigFrom } from "../../unity";
 
 import multer from "multer";

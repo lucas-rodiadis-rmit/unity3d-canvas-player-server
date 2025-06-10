@@ -1,4 +1,7 @@
-import { CreateUnityAppPayload } from "../shared/types";
+import {
+	CreateUnityAppPayload,
+	UnityPlayerOptions
+} from "../shared/types/types";
 import { CreateUnityProjectFilePayload } from "../types";
 import { UnityApp } from "../unity";
 import unityappController from "./unityapp.controller";
@@ -110,6 +113,7 @@ function createUnityApp(
 	let result = unityappRepository.addUnityProject(
 		userId,
 		payload.name,
+		payload.playerOptions,
 		false, // Disallow upsert
 		projectId
 	);
@@ -141,7 +145,18 @@ function createUnityApp(
 	return newApp;
 }
 
+function getProjectPlayerOptions(
+	projectId: string
+): UnityPlayerOptions | null {
+	let result =
+		unityappRepository.getUnityProject(projectId);
+	if (result.status !== "SUCCESS") return null;
+
+	return result.data.playerOptions;
+}
+
 export default {
+	getProjectPlayerOptions,
 	createUnityApp,
 	addUnityProjectFile,
 	getUnityApp,

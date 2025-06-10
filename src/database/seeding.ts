@@ -1,3 +1,4 @@
+import { UnityPlayerOptions } from "../shared/types";
 import unityappRepository from "./unityapp.repository";
 import userRepository from "./user.repository";
 
@@ -28,8 +29,20 @@ function seed(): boolean {
 		}
 	}
 
-	const seedProjects = [
-		["test_instructor_1", "ClinicSim", "test123456"]
+	const seedProjects: Array<
+		[string, string, UnityPlayerOptions, string]
+	> = [
+		[
+			"test_instructor_1",
+			"ClinicSim",
+			{
+				showFPS: true,
+				allowFullscreen: true,
+				allowResizing: true,
+				allowReloading: true
+			},
+			"test123456"
+		]
 	];
 
 	for (const project of seedProjects) {
@@ -40,8 +53,9 @@ function seed(): boolean {
 		const result = unityappRepository.addUnityProject(
 			project[0],
 			project[1],
+			project[2],
 			true,
-			project[2]
+			project[3]
 		);
 
 		if (result.status !== "SUCCESS") {

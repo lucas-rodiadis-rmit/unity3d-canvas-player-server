@@ -12,10 +12,8 @@ import {
 } from "../../lti";
 
 // Import custom payload type and type guard
-import {
-	CreateEmbedPayload,
-	isCreateEmbedPayload
-} from "../../types";
+import { isCreateEmbedPayload } from "../../shared/types/validation";
+import { CreateEmbedPayload } from "../../types";
 
 // Import HTTP client for sending outgoing requests
 import axios from "axios";
