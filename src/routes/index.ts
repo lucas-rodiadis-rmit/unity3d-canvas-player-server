@@ -32,6 +32,10 @@ router.use("", baseRouter);
 router.use("/", frontendRouter);
 router.use("/api/v1", apiRouter);
 
+// Set static for public resources
+router.use("/", staticRoute(resourcePath("frontend")));
+router.use("/", staticRoute(resourcePath("public")));
+
 // ALL ROUTES BELOW HERE ARE REQUIRED TO BE AUTHENTICATED
 router.use(requiresCanvasUser);
 
@@ -47,10 +51,6 @@ router.use("/data", dataRouter);
 
 // Define endpoints using modularised routers
 router.use("", unityRouter);
-
-// Set static for public resources
-router.use("/", staticRoute(resourcePath("frontend")));
-router.use("/", staticRoute(resourcePath("public")));
 
 export function initialiseRoutes(app: Express) {
 	// Automatically parse application/x-www-form-urlencoded request bodies
