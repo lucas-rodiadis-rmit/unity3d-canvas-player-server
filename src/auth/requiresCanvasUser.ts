@@ -6,8 +6,15 @@ const requiresCanvasUser = (
 	res: Response,
 	next: NextFunction
 ) => {
+	const returnUrl: string | undefined =
+		req.body?.ext_content_return_url;
+
 	// If we have seen the user before (ie, they have a cookie), let them through
 	if (req.session.user) {
+		if (returnUrl) {
+			req.session.user.returnUrl = returnUrl;
+		}
+
 		next();
 		return;
 	}
@@ -26,11 +33,7 @@ const requiresCanvasUser = (
 		return;
 	}
 
-	// Otherwise, we double check the legitimacy of the request and who made it
-
-	const returnUrl: string =
-		req.body?.ext_content_return_url;
-
+	/*
 	// All initial canvas requests would have a return URL. We know it didn't come from Canvas in this case
 	if (!returnUrl) {
 		console.warn(`Non Canvas request received.`, req);
@@ -39,6 +42,7 @@ const requiresCanvasUser = (
 		);
 		return;
 	}
+	*/
 
 	// TODO: Check signed Canvas data here. For now, let's assume if it looks like it came from Canvas that it came from Canvas
 	if (
