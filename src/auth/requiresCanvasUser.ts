@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import appConfig from "../appConfig";
 
 const requiresCanvasUser = (
 	req: Request,
@@ -7,6 +8,20 @@ const requiresCanvasUser = (
 ) => {
 	// If we have seen the user before (ie, they have a cookie), let them through
 	if (req.session.user) {
+		next();
+		return;
+	}
+
+	// More lenient on auth for dev
+	if (appConfig.nodeEnv === "development") {
+		const returnUrl: string = `TEST_RETURN_URL-${new Date().toISOString()}`;
+
+		req.session.user = {
+			launchId: "test_context_1",
+			isInstructor: true,
+			returnUrl: returnUrl,
+			canvasUserId: "test_instructor_3"
+		};
 		next();
 		return;
 	}

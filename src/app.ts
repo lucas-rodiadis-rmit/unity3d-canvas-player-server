@@ -48,7 +48,7 @@ const sessionProps: session.SessionOptions = {
 	cookie: {
 		httpOnly: true,
 		secure: false,
-		sameSite: "lax",
+		sameSite: "none", // Required for cross-site cookies, which is exactly what we're doing
 		maxAge: 1000 * 60 * 60 // 1 hour
 	}
 };

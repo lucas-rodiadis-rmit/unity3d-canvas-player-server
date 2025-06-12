@@ -12,9 +12,7 @@ import morgan from "morgan";
 
 import { resourcePath } from "../constants";
 
-import appConfig from "../appConfig";
 import requiresCanvasUser from "../auth/requiresCanvasUser";
-import requiresCanvasUserDev from "../auth/requiresCanvasUserDev";
 import apiRouter from "./api";
 import baseRouter from "./baseRouter";
 import dataRouter from "./dataRouter";
@@ -32,11 +30,7 @@ router.use(gzipHandler);
 router.use("", baseRouter);
 
 // ALL ROUTES BELOW HERE ARE REQUIRED TO BE AUTHENTICATED
-if (appConfig.nodeEnv === "development") {
-	router.use(requiresCanvasUserDev);
-} else {
-	router.use(requiresCanvasUser);
-}
+router.use(requiresCanvasUser);
 
 router.use("/data", dataRouter);
 //
