@@ -8,6 +8,10 @@ import { unityappController } from "../database";
 
 const router = Router();
 
+// Serve Unity player at the 'unity-player' endpoint
+router.post("/unity-player/:appId", playerFunction);
+router.get("/unity-player/:appId", playerFunction);
+
 function playerFunction(req: Request, res: Response) {
 	// res.send("<html> <iframe src='../../dist/index.html' width='50%' 'height=50%' /> </html>");
 
@@ -53,9 +57,5 @@ function playerFunction(req: Request, res: Response) {
 	res.set("Content-Type", "text/html");
 	res.send(reactEntryPoint);
 }
-
-// Serve Unity player at the 'unity-player' endpoint
-router.post("/unity-player/:appId", playerFunction);
-router.get("/unity-player/:appId", playerFunction);
 
 export default router;

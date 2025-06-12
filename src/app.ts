@@ -34,7 +34,7 @@ declare module "express-session" {
 			canvasUserId: string;
 			launchId: string;
 			isInstructor: boolean;
-			returnUrl: string;
+			returnUrl?: string;
 			// roles: string[];  Could store a list of all roles for the user in the future
 		};
 	}
