@@ -13,7 +13,6 @@ const requiresCanvasUserDev = (
 
 	const returnUrl: string = `TEST_RETURN_URL-${new Date().toISOString()}`;
 
-	// Otherwise, we double check the legitimacy of the request and who made it
 	req.session.user = {
 		launchId: "test_context_1",
 		isInstructor: true,

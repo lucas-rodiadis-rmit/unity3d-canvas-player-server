@@ -16,11 +16,12 @@ const requiresCanvasUser = (
 	const returnUrl: string =
 		req.body?.ext_content_return_url;
 
+	// All initial canvas requests would have a return URL. We know it didn't come from Canvas in this case
 	if (!returnUrl) {
-		console.warn(
-			"No ext_content_return_url found in request body."
+		console.warn(`Non Canvas request received.`, req);
+		res.status(403).send(
+			"This route is for Canvas users only."
 		);
-		res.status(400).send("Missing return URL");
 		return;
 	}
 
