@@ -23,7 +23,7 @@ const app = express();
 // For parsing JSON from frontend
 app.use(express.json());
 
-if (true) {
+if (appConfig.nodeEnv === "development") {
 	app.use(cors());
 }
 
